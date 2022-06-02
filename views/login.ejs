@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOLA CULEROS</title>
+</head>
+    <body>
+        <h1>VENOM</h1>
+
+        <form id="formLogin" action="/login" method="POST">
+        <h2>Conectarse</h2>
+
+        <%if(error){%>
+            <h3>Inicio de sesion inválido</h3>
+        <%}%>
+
+        <label for="user">User</label> 
+        <input type="text" name="user" placeholder="Usuario...">
+
+        <label for="contraseña">Contraseña</label> 
+        <input type="password" name="password" placeholder="Contraseña...">
+        <button type="submit">Ingresar</button>
+        </form>
+
+        <a href="/register">Registrarse</a>
+
+        
+
+
+    </body>
+</html>
