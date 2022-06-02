@@ -15,8 +15,6 @@ const postController = require('../controllers/postController')
 
 router.get("/", auth.isAuthenticated, async (req, res) => {
 
-    let posts
-
     try{
         const decode = await promisify(jwt.verify)(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
         db.query('SELECT * FROM users WHERE id = ?', [decode.id], (err, result)=>{
