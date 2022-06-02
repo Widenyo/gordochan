@@ -30,26 +30,26 @@
 
     <br>
     <p>SI LOS ESTILOS SE ROMPEN APRETA CTRL + F5 XD</p>
+    <button id="cambiarFuente">CAMBIAR FUENTE</button>
     <marquee><h1>GORDOCHAN</h1></marquee>
     <% if(posts){ %>
-    <div id="posts">
         <% posts.forEach((p) =>{ %>
             <div class="post">
                 <div class="innerPost">
                 <p>>><%=p.post_id%></p>
                 <img class="avatar" src="../public/avatar/<%=p.avatar %>">
-                <p><%= p.user %></p>
+                <p class="post_username"><%= p.user %></p>
                 <p><%= p.date %><p>
                 <p><%= p.content %></p>
                 </div>
             </div>
-    </div>
     <% })}else{ %>
         <h1>NO HAY POSTS TODAVÍA. SOYEZ LE PREMIER</h1>
    <% } %>
    <iframe src="https://www.retrogames.cc/embed/8962-kung-fu-master.html" width="600" height="450" frameborder="no" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" scrolling="no"></iframe>
 
 
-
+<script src="../public/scripts/index.js"></script>
 </body>
+
 </html>
