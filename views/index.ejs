@@ -35,7 +35,8 @@
         <% posts.forEach((p) =>{ %>
             <div class="post">
                 <div class="innerPost">
-                <img class="avatar" src="../public/avatar/<%=p.avatar %>"><span><%= p.user %></span>
+                <p><%= p.user %></p>
+                <img class="avatar" src="../public/avatar/<%=p.avatar %>">
                 <span><%= p.date %><span><span><%=p.post_id%></span>
                 <p><%= p.content %></p>
                 </div>
