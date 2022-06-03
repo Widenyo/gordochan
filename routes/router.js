@@ -79,11 +79,9 @@ router.get('/post/:id', (req, res) => {
             if(r.length === 0) return res.render('post', {post: false, banner: getRandomBanner() }, )
             let post = r[0]
 
-             db.query('SELECT post.id AS id, users.id AS user_id, content AS content, date AS date, anonimo AS anonimo, parent AS parent, avatar AS avatar, image AS image FROM post JOIN users ON users.id = post.user_id JOIN post_image ON post_id = post.id WHERE parent = ?;' , id, (err, r) =>{
+             db.query('SELECT users.user AS user, post.id AS id, users.id AS user_id, content AS content, date AS date, anonimo AS anonimo, parent AS parent, avatar AS avatar, image AS image FROM post JOIN users ON users.id = post.user_id JOIN post_image ON post_id = post.id WHERE parent = ?;' , id, (err, r) =>{
 
-                if(r.length > 0){
-                    post.replies = r
-                }
+                if(r) if(r.length > 0) post.replies = r
                 else{
                     if(err) console.log(err)
                     post.replies = null
