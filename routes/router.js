@@ -62,6 +62,31 @@ router.get('/register', auth.isNotAuthenticated, (req, res) => {
     res.render('register')
 })
 
+router.get('/post/:id', (req, res) => {
+
+    const {id} = req.params
+
+    db.query('SELECT * FROM post WHERE id = ?' , id, (err, r) => {
+        if(r){
+            if(r.length === 0) return res.render('post', {post: false})
+            let post = r[0]
+
+            db.query('SELECT * FROM users WHERE id = ?', post.user_id, (err, r) => {
+                if(r){
+                    let user = r[0]
+                    
+                    let postData = {...post, user: {user_id: user.id, user: user.user, avatar: user.avatar}}
+
+                    return res.render('post', {post: postData})
+                }
+                if(err) console.log(err)
+            })
+
+        } 
+        if(err) console.log(err)
+    })
+})
+
 
 //CONTROLLER METHODS//
 

@@ -19,26 +19,37 @@
     <input type="file" name="avatar" accept="image/png, image/jpeg, image/gif">
     <button type="submit">Enviar</button>
     </form>
-
-    <form action="/post" method="POST">
-        <label for="post">en qué está pensando <%= user.user %> ?</label>
-        <input type="text" name="content">
-        <label for="anonimo">Anonimo</label><input type="checkbox" name="anon">
-        <button type="submit">postear</button>
-    </form>
-
-
-
+    
     <br>
+
     <p>SI LOS ESTILOS SE ROMPEN APRETA CTRL + F5 XD</p>
     <button id="cambiarFuente">CAMBIAR FUENTE</button>
+
+    <br>
+
     <marquee><h1>GORDOCHAN</h1></marquee>
+
+    <br>
+
+
+    <!---- FORM PARA POSTEAR ------->
+        <label for="post">en qué está pensando <%= user.user %> ?</label><input type="text" name="content" id="text">
+        <br>
+        <label for="anonimo">Anónimo</label><input type="checkbox" name="anon" id="anonCheck">
+        <br>
+        <label for="image">Imagen</label><input type="file" name="image" accept="image/png, image/jpeg, image/gif" id="imageInput">
+        <br>
+        <button id="postSubmit">postear</button>
+
+    <br>
+
+
     <% if(posts){ %>
         <% posts.forEach((p) =>{ %>
             <% if(!p.anonimo){ %>
             <div class="post">
                 <div class="innerPost">
-                <p>>><%=p.post_id%></p>
+                <a href="./post/<%=p.post_id%>">>><%=p.post_id%></a><br>
                 <img class="avatar" src="../public/avatar/<%=p.avatar %>">
                 <p class="post_username"><%= p.user %></p>
                 <p><%= p.date %><p>
@@ -49,7 +60,7 @@
 
                 <div class="post">
                     <div class="innerPost">
-                    <p>>><%=p.post_id%></p>
+                    <a href="./post/<%=p.post_id%>">>><%=p.post_id%></a><br>
                     <img class="avatar" src="../public/avatar/default.jpg">
                     <p class="post_username">Anónimo</p>
                     <p><%= p.date %><p>
