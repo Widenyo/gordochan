@@ -75,16 +75,16 @@ router.get('/post/:id', (req, res) => {
 
     db.query('SELECT * FROM post JOIN post_image ON post_id = post.id WHERE post.id = ?' , id, (err, r) => {
         if(r){
-            if(r.length === 0) return res.render('post', {post: false})
+            if(r.length === 0) return res.render('post', {post: false, banner: getRandomBanner() }, )
             let post = r[0]
 
             db.query('SELECT * FROM users WHERE id = ?', post.user_id, (err, r) => {
                 if(r){
                     let user = r[0]
                     
-                    let postData = {...post, user: {user_id: user.id, user: user.user, avatar: user.avatar, banner: getRandomBanner()}}
+                    let postData = {...post, user: {user_id: user.id, user: user.user, avatar: user.avatar}}
 
-                    return res.render('post', {post: postData})
+                    return res.render('post', {post: postData, banner: getRandomBanner()} )
                 }
                 if(err) console.log(err)
             })
