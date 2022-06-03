@@ -8,6 +8,10 @@ const setPfp = require('../controllers/setPfp')
 const postController = require('../controllers/postController')
 const multer = require('multer')
 const upload = multer({dest: '/public/images'})
+const getRandomBanner = require('../controllers/getRandomBanner')
+
+
+
 
 
 
@@ -32,7 +36,7 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
                     } 
                     if(result){
                         console.log(result)
-                        if(result.length === 0) res.render('index', {user: user, posts: false});
+                        if(result.length === 0) res.render('index', {user: user, posts: false, banner: getRandomBanner()});
                         let posts = result.map(p =>{
                             return {
                                 post_id: p.post_id,
@@ -45,7 +49,7 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
                                 image: p.image
                             }
                         })
-                        res.render('index', {user: user, posts: posts});
+                        res.render('index', {user: user, posts: posts, banner: getRandomBanner()});
                     }
                 })
             }
@@ -78,7 +82,7 @@ router.get('/post/:id', (req, res) => {
                 if(r){
                     let user = r[0]
                     
-                    let postData = {...post, user: {user_id: user.id, user: user.user, avatar: user.avatar}}
+                    let postData = {...post, user: {user_id: user.id, user: user.user, avatar: user.avatar, banner: getRandomBanner()}}
 
                     return res.render('post', {post: postData})
                 }

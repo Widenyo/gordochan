@@ -4,6 +4,10 @@
     border-radius: 50%;
 }
 
+#banner{
+    border: 5px double darkred;
+}
+
 .avatar{
     width: 50px;
     height: 50px;

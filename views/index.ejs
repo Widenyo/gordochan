@@ -10,6 +10,10 @@
 <body>
     <h1>SIEGENTLEMAN ESTE ES TU FIN</h1>
 
+    <center><img id="banner" src="../public/banners/<%=banner%>"></center>
+
+    <% console.log(banner) %> 
+
     <p>Bienvenido de vuelta, <%= user.user %></p>
     <img src="../public/avatar/<%=user.avatar%>" id="avatar">
     <a href="/logout">logout</a>
@@ -83,6 +87,7 @@
 
 
 <script src="../public/scripts/index.js"></script>
+<script src="../public/scripts/randombanner.js"></script>
 </body>
 
 </html>
