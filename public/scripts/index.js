@@ -3,8 +3,7 @@ let cambiarFuente = document.getElementById('cambiarFuente')
 
 cambiarFuente.addEventListener(('click'), () => {
     for (let post of posts) {
-        console.log(post.style)
-        post.style.fontFamily = 'Comic Sans MS'
-        console.log(post.style)
+        if(post.style.fontFamily === `"Comic Sans MS"`) post.style.fontFamily = ''
+        else post.style.fontFamily = 'Comic Sans MS'
     }
 })

@@ -23,6 +23,7 @@
     <form action="/post" method="POST">
         <label for="post">en qué está pensando <%= user.user %> ?</label>
         <input type="text" name="content">
+        <label for="anonimo">Anonimo</label><input type="checkbox" name="anon">
         <button type="submit">postear</button>
     </form>
 
@@ -34,6 +35,7 @@
     <marquee><h1>GORDOCHAN</h1></marquee>
     <% if(posts){ %>
         <% posts.forEach((p) =>{ %>
+            <% if(!p.anonimo){ %>
             <div class="post">
                 <div class="innerPost">
                 <p>>><%=p.post_id%></p>
@@ -43,7 +45,19 @@
                 <p><%= p.content %></p>
                 </div>
             </div>
-    <% })}else{ %>
+            <% }else{ %>
+
+                <div class="post">
+                    <div class="innerPost">
+                    <p>>><%=p.post_id%></p>
+                    <img class="avatar" src="../public/avatar/default.jpg">
+                    <p class="post_username">Anónimo</p>
+                    <p><%= p.date %><p>
+                    <p><%= p.content %></p>
+                    </div>
+                </div>
+
+    <% }})}else{ %>
         <h1>NO HAY POSTS TODAVÍA. SOYEZ LE PREMIER</h1>
    <% } %>
    <iframe src="https://www.retrogames.cc/embed/8962-kung-fu-master.html" width="600" height="450" frameborder="no" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" scrolling="no"></iframe>

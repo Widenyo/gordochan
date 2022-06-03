@@ -38,10 +38,10 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
                                 date: p.date,
                                 user_id: p.user_id,
                                 user: p.user,
-                                avatar: p.avatar
+                                avatar: p.avatar,
+                                anonimo: p.anonimo
                             }
                         })
-                        console.log(posts)
                         res.render('index', {user: user, posts: posts});
                     }
                 })

@@ -15,6 +15,7 @@ const storage = multer.diskStorage({
         const mimetype = filetypes.test(file.mimetype);
 
         let name = Date.now() + path.extname(file.originalname)
+        console.log(file)
         
         if(mimetype && extname) cb(null, name)
         else return
@@ -28,4 +29,6 @@ const storage = multer.diskStorage({
 
     }
 })
-exports.upload = multer({storage: storage})
+exports.upload = multer({storage: storage,
+limits: {fileSize: 8000000},
+})
