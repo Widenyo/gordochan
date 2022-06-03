@@ -6,7 +6,8 @@ const {promisify} = require('util')
 const jwt = require('jsonwebtoken')
 const setPfp = require('../controllers/setPfp')
 const postController = require('../controllers/postController')
-
+const multer = require('multer')
+const upload = multer({dest: '/public/images'})
 
 
 
@@ -25,21 +26,23 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
                     email: result[0].email,
                     avatar: result[0].avatar
                 }
-                db.query("SELECT * FROM users INNER JOIN post ON users.id = post.user_id", (err, result) => {
+                db.query("SELECT * FROM users INNER JOIN post ON users.id = post.user_id JOIN post_image ON post_id = post.id", (err, result) => {
                     if(err){
                         console.log(err)
                     } 
                     if(result){
+                        console.log(result)
                         if(result.length === 0) res.render('index', {user: user, posts: false});
                         let posts = result.map(p =>{
                             return {
-                                post_id: p.id,
+                                post_id: p.post_id,
                                 content: p.content,
                                 date: p.date,
                                 user_id: p.user_id,
                                 user: p.user,
                                 avatar: p.avatar,
-                                anonimo: p.anonimo
+                                anonimo: p.anonimo,
+                                image: p.image
                             }
                         })
                         res.render('index', {user: user, posts: posts});
@@ -66,7 +69,7 @@ router.get('/post/:id', (req, res) => {
 
     const {id} = req.params
 
-    db.query('SELECT * FROM post WHERE id = ?' , id, (err, r) => {
+    db.query('SELECT * FROM post JOIN post_image ON post_id = post.id WHERE post.id = ?' , id, (err, r) => {
         if(r){
             if(r.length === 0) return res.render('post', {post: false})
             let post = r[0]
@@ -101,7 +104,9 @@ router.post('/changePfp', setPfp.upload.single('avatar'), (req, res) =>{
     res.redirect('/')
 })
 
-router.post('/post', postController.createPost)
+
+
+router.post('/post', postController.uploadImg.single('image'), postController.createPost)
 
 
 

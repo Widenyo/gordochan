@@ -18,6 +18,9 @@
                 <p class="post_username"><%= post.user.user %></p>
                 <p><%= post.date %><p>
                 <p><%= post.content %></p>
+                <% if(post.image){%>
+                    <img class="img" src="../public/images/<%=post.image%>">
+                    <%} %>
                 </div>
             </div>
             <% }else{ %>
@@ -29,6 +32,9 @@
                     <p class="post_username">Anónimo</p>
                     <p><%= post.date %><p>
                     <p><%= post.content %></p>
+                    <% if(post.image){%>
+                        <img class="img" src="../public/images/<%=post.image%>">
+                        <%} %>
                     </div>
                 </div>
 

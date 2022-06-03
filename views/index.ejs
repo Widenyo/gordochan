@@ -33,13 +33,15 @@
 
 
     <!---- FORM PARA POSTEAR ------->
+    <form action="/post" enctype="multipart/form-data" method="POST">
         <label for="post">en qué está pensando <%= user.user %> ?</label><input type="text" name="content" id="text">
         <br>
-        <label for="anonimo">Anónimo</label><input type="checkbox" name="anon" id="anonCheck">
+        <label for="anonimo">Anónimo</label><input type="checkbox" name="anon" id="anontext">
         <br>
         <label for="image">Imagen</label><input type="file" name="image" accept="image/png, image/jpeg, image/gif" id="imageInput">
         <br>
-        <button id="postSubmit">postear</button>
+        <button type="submit">postear</button>
+    </form>
 
     <br>
 
@@ -54,6 +56,9 @@
                 <p class="post_username"><%= p.user %></p>
                 <p><%= p.date %><p>
                 <p><%= p.content %></p>
+                <% if(p.image){%>
+                    <img class="img" src="../public/images/<%=p.image%>">
+                    <%} %>
                 </div>
             </div>
             <% }else{ %>
@@ -65,6 +70,9 @@
                     <p class="post_username">Anónimo</p>
                     <p><%= p.date %><p>
                     <p><%= p.content %></p>
+                    <% if(p.image){%>
+                        <img class="img" src="../public/images/<%=p.image%>">
+                        <%} %>
                     </div>
                 </div>
 

@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken')
 const db = require('../database/db')
 const {promisify} = require('util')
 const path = require('path')
+
+
 const multer = require('multer')
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -18,11 +20,11 @@ const storage = multer.diskStorage({
         if(mimetype && extname) cb(null, name)
         else return
 
-        db.query(`INSERT INTO post_image SET ?`, {image: name, post_id: postId})
-
+        req.body.image = name
     }
 })
-const uploadImg = multer({storage: storage, limits: {fileSize: 8000000}})
+
+exports.uploadImg = multer({storage: storage, limits: {fileSize: 8000000}})
 
 
 
@@ -30,10 +32,12 @@ const uploadImg = multer({storage: storage, limits: {fileSize: 8000000}})
 
 exports.createPost = async (req, res) => {
 
-    let {content, anon} = req.body
+    let {content, anon, image} = req.body
 
-    if(anon === true) anon = 1
+    if(anon === 'on') anon = 1
     else anon = 0
+
+    if(content.length === 0 && !image) return res.redirect('/')
 
 
     try{
@@ -45,6 +49,9 @@ exports.createPost = async (req, res) => {
 
         else{
             let postId = r.insertId
+            
+                db.query('INSERT INTO post_image SET ?', {image: image, post_id: postId}, (e, r) =>{if(e) return})
+
             res.redirect('/')
         }
     })
