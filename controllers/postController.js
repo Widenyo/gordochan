@@ -30,9 +30,10 @@ exports.uploadImg = multer({storage: storage, limits: {fileSize: 8000000}})
 
 
 
-exports.createPost = async (req, res) => {
+exports.createPost = async (req, res, next) => {
 
     let {content, anon, image} = req.body
+    let parentId = req.params.parentId
 
     if(anon === 'on') anon = 1
     else anon = 0
@@ -42,7 +43,8 @@ exports.createPost = async (req, res) => {
 
     try{
     const decode = await promisify(jwt.verify)(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
-    db.query('INSERT INTO post SET ?', {user_id: decode.id, content:content, anonimo: anon}, (e, r) =>{
+    db.query('INSERT INTO post SET ?', {user_id: decode.id, content:content, anonimo: anon, parent: parentId}, (e, r) =>{
+        console.log(r)
         if(e){
             res.redirect('/')
         }
@@ -50,9 +52,8 @@ exports.createPost = async (req, res) => {
         else{
             let postId = r.insertId
             
-                db.query('INSERT INTO post_image SET ?', {image: image, post_id: postId}, (e, r) =>{if(e) return})
-
-            res.redirect('/')
+            db.query('INSERT INTO post_image SET ?', {image: image, post_id: postId}, (e, r) =>{if(e) return})
+            next()
         }
     })
 }

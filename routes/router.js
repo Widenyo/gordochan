@@ -46,7 +46,8 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
                                 user: p.user,
                                 avatar: p.avatar,
                                 anonimo: p.anonimo,
-                                image: p.image
+                                image: p.image,
+                                parent: p.parent
                             }
                         })
                         res.render('index', {user: user, posts: posts, banner: getRandomBanner()});
@@ -77,6 +78,18 @@ router.get('/post/:id', (req, res) => {
         if(r){
             if(r.length === 0) return res.render('post', {post: false, banner: getRandomBanner() }, )
             let post = r[0]
+
+             db.query('SELECT post.id AS id, users.id AS user_id, content AS content, date AS date, anonimo AS anonimo, parent AS parent, avatar AS avatar, image AS image FROM post JOIN users ON users.id = post.user_id JOIN post_image ON post_id = post.id WHERE parent = ?;' , id, (err, r) =>{
+
+                if(r.length > 0){
+                    post.replies = r
+                }
+                else{
+                    if(err) console.log(err)
+                    post.replies = null
+
+                } 
+            })
 
             db.query('SELECT * FROM users WHERE id = ?', post.user_id, (err, r) => {
                 if(r){
@@ -110,7 +123,12 @@ router.post('/changePfp', setPfp.upload.single('avatar'), (req, res) =>{
 
 
 
-router.post('/post', postController.uploadImg.single('image'), postController.createPost)
+router.post('/post', postController.uploadImg.single('image'), postController.createPost, (req, res) => {
+    res.redirect('/')
+})
+router.post('/post/reply/:parentId', postController.uploadImg.single('image'), postController.createPost, (req, res) =>{
+    res.redirect('/post/' +  req.params.parentId)
+})
 
 
 

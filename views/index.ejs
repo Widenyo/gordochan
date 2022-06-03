@@ -31,7 +31,7 @@
 
     <br>
 
-    <marquee><h1>GORDOCHAN</h1></marquee>
+    <marquee><img src="../public/siteImages/GORDOCHAN TITLE.gif"></marquee>
 
     <br>
 
@@ -52,7 +52,7 @@
 
     <% if(posts){ %>
         <% posts.forEach((p) =>{ %>
-            <% if(!p.anonimo){ %>
+            <% if(!p.anonimo && !p.parent){ %>
             <div class="post">
                 <div class="innerPost">
                 <a href="./post/<%=p.post_id%>">>><%=p.post_id%></a><br>
@@ -65,7 +65,7 @@
                     <%} %>
                 </div>
             </div>
-            <% }else{ %>
+            <% }if(p.anonimo && !p.parent){ %>
 
                 <div class="post">
                     <div class="innerPost">

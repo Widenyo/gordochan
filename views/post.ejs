@@ -10,13 +10,28 @@
 <body>
     <a href="../../">Volver</a><br>
     <center><img id="banner" src="../public/banners/<%=banner%>"></center>
-    <% if(post){console.log(post) %>
+    <marquee><img src="../public/siteImages/GORDOCHAN TITLE.gif"></marquee>
+
+    <form action="/post/reply/<%=post.post_id%>" enctype="multipart/form-data" method="POST">
+        <label for="post">responde algo</label><input type="text" name="content" id="text">
+        <br>
+        <label for="anonimo">Anónimo</label><input type="checkbox" name="anon" id="anontext">
+        <br>
+        <label for="image">Imagen</label><input type="file" name="image" accept="image/png, image/jpeg, image/gif" id="imageInput">
+        <br>
+        <button type="submit">responder</button>
+    </form>
+
+    <% if(post){ %>
             <% if(!post.anonimo){ %>
             <div class="post">
                 <div class="innerPost">
                 <a href="../post/<%=post.post_id%>">>><%=post.post_id%></a><br>
                 <img class="avatar" src="../public/avatar/<%=post.user.avatar %>">
                 <p class="post_username"><%= post.user.user %></p>
+                <%if(post.parent){ %>
+                    <p>Responde a: <a href="/post/<%=post.parent%>">>><%=post.parent%></a></p>
+                   <% }%>
                 <p><%= post.date %><p>
                 <p><%= post.content %></p>
                 <% if(post.image){%>
@@ -31,6 +46,9 @@
                     <a href="../post/<%=post.post_id%>">>><%=post.post_id%></a><br>
                     <img class="avatar" src="../public/avatar/default.jpg">
                     <p class="post_username">Anónimo</p>
+                    <%if(post.parent){ %>
+                        <p>Responde a: <a href="/post/<%=post.parent%>">>><%=post.parent%></a></p>
+                       <% }%>
                     <p><%= post.date %><p>
                     <p><%= post.content %></p>
                     <% if(post.image){%>
@@ -38,8 +56,48 @@
                         <%} %>
                     </div>
                 </div>
+            <% } %>
 
-    <% }}else{ %>
+                <% if(post.replies){ %>
+                <% let replies = post.replies %>
+                <% replies.forEach(r =>{ %>
+                <% if(!r.anonimo){console.log(r) %>
+
+                    <div class="post">
+                        <div class="innerPost">
+                        <a href="../post/<%=r.id%>">>><%=r.id%></a><br>
+                        <img class="avatar" src="../public/avatar/<%=r.avatar%>">
+                        <p class="post_username"><%= post.user.user %></p>
+                        <p>Responde a: <a href="/post/<%=r.parent%>">>><%=r.parent%></a></p>
+                        <p><%= r.date %><p>
+                        <p><%= r.content %></p>
+                        <% if(r.image){%>
+                            <img class="img" src="../public/images/<%=r.image%>">
+                            <%} %>
+                        </div>
+                    </div>
+
+               <% }else{ %>
+                <div class="post">
+                    <div class="innerPost">
+                    <a href="../post/<%=r.id%>">>><%=r.id%></a><br>
+                    <img class="avatar" src="../public/avatar/default.jpg">
+                    <p class="post_username">Anónimo</p>
+                    <p>Responde a: <a href="/post/<%=r.parent%>">>><%=r.parent%></a></p>
+                    <p><%= r.date %><p>
+                    <p><%= r.content %></p>
+                    <% if(r.image){%>
+                        <img class="img" src="../public/images/<%=r.image%>">
+                        <%} %>
+                    </div>
+                </div>
+               <%} %>
+
+
+                <%  }) %>     
+               <% } %>
+
+    <% }else{ %>
         <h1>ESE POST NOE XISTE XD</h1>
    <% } %>
 </body>
