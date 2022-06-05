@@ -13,7 +13,7 @@ exports.register = async (req, res) => {
     try{
     const salt = await bcrypt.genSalt()
     let hashedPass = await bcrypt.hash(password, salt)
-    let ip = req.header('x-forwarded-for') || req.connection.remoteAddress
+    let ip = req.connection.remoteAddress
     console.log(ip)
     db.query('INSERT INTO users SET ?', {user: user, password: hashedPass}, (e, r) =>{
         if(e){
