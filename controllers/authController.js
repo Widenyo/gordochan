@@ -13,8 +13,7 @@ exports.register = async (req, res) => {
     try{
     const salt = await bcrypt.genSalt()
     let hashedPass = await bcrypt.hash(password, salt)
-    let ip = req.header('x-forwarded-for')
-    console.log(ip)
+    console.log(req.headers)
     db.query('INSERT INTO users SET ?', {user: user, password: hashedPass}, (e, r) =>{
         if(e){
             res.redirect('/register')
