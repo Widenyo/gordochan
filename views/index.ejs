@@ -5,16 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../public/styles/index.css">
-    <title>DASHBOARD</title>
+    <title>gordochan.xyz</title>
 </head>
 <body>
-    <h1>SIEGENTLEMAN ESTE ES TU FIN</h1>
+    <h1>Bienvenido de vuelta, <%= user.user %></h1>
 
     <center><img id="banner" src="../public/banners/<%=banner%>"></center>
 
     <% console.log(banner) %> 
-
-    <p>Bienvenido de vuelta, <%= user.user %></p>
     <img src="../public/avatar/<%=user.avatar%>" id="avatar">
     <a href="/logout">logout</a>
 
