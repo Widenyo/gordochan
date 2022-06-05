@@ -4,7 +4,7 @@ const db = require('../database/db')
 const auth = require('../controllers/authController')
 const {promisify} = require('util')
 const jwt = require('jsonwebtoken')
-const setPfp = require('../controllers/setPfp')
+const setInfo = require('../controllers/setInfo')
 const postController = require('../controllers/postController')
 const getRandomBanner = require('../controllers/getRandomBanner')
 
@@ -44,7 +44,8 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
                                 avatar: p.avatar,
                                 anonimo: p.anonimo,
                                 image: p.image,
-                                parent: p.parent
+                                parent: p.parent,
+                                signature: p.signature
                             }
                         })
                         return res.render('index', {user: user, posts: posts, banner: getRandomBanner()});
@@ -111,7 +112,11 @@ router.post('/login', auth.login)
 
 router.get('/logout', auth.logout)
 
-router.post('/changePfp', setPfp.upload.single('avatar'), (req, res) =>{
+router.post('/changePfp', setInfo.uploadPfp.single('avatar'), (req, res) =>{
+    res.redirect('/')
+})
+
+router.post('/updateInfo', setInfo.updateInfo, (req, res) => {
     res.redirect('/')
 })
 

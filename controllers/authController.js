@@ -9,11 +9,13 @@ const {promisify} = require('util')
 
 
 exports.register = async (req, res) => {
-    const {user, email, password} = req.body
+    const {user, password} = req.body
     try{
     const salt = await bcrypt.genSalt()
     let hashedPass = await bcrypt.hash(password, salt)
-    db.query('INSERT INTO users SET ?', {user: user, email:email, password: hashedPass}, (e, r) =>{
+    let ip = req.header('x-forwarded-for') || req.connection.remoteAddress
+    console.log(ip)
+    db.query('INSERT INTO users SET ?', {user: user, password: hashedPass}, (e, r) =>{
         if(e){
             res.redirect('/register')
         }

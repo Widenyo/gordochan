@@ -19,6 +19,15 @@
     <input type="file" name="avatar" accept="image/png, image/jpeg, image/gif">
     <button type="submit">Enviar</button>
     </form>
+
+    <form action="/updateInfo" method="POST">
+        <label for="signature">Modificar firma</label>
+        <input type="text" name="signature">
+        <button type="submit">Enviar</button>
+    </form>
+
+
+
     
     <br>
 
@@ -60,6 +69,12 @@
                         <img class="img" src="../public/images/<%=p.image%>">
                         <%} %>
                 </div>
+                <% if(p.signature){ %>
+                    <div class="signatureDiv">
+                        <hr>
+                        <span class="signatureDiv_signature"><%=p.signature%></span>
+                    </div>
+                <%} %>
             </div>
             <% }if(p.anonimo && !p.parent){ %>
 

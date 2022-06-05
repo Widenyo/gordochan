@@ -29,6 +29,21 @@ const storage = multer.diskStorage({
 
     }
 })
-exports.upload = multer({storage: storage,
+exports.uploadPfp = multer({storage: storage,
 limits: {fileSize: 8000000},
 })
+
+exports.updateInfo = async (req, res, next) =>{
+    const {signature} = req.body
+
+    try{
+        const decode = await promisify(jwt.verify)(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
+        db.query(`UPDATE users SET signature = ? WHERE id = ?`, [signature, decode.id], (e, r) => {
+            if(r) next()
+        })
+    }catch(e){
+        console.log(e)
+    }
+
+
+}
