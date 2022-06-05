@@ -45,29 +45,24 @@ exports.createPost = async (req, res, next) => {
     const decode = await promisify(jwt.verify)(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
     db.query('INSERT INTO post SET ?', {user_id: decode.id, content:content, anonimo: anon, parent: parentId}, (e, r) =>{
         if(e){
-            res.redirect('/')
+            return res.redirect('/')
         }
 
         else{
-            console.log(r)
-            // if(r.parent){
-            //     let pointer = r.parent
-
-            //     while(pointer){
-            //         db.query('SELECT * post WHERE id = ?', pointer, (parent, err) => {
-            //             if(err) return console.log(err)
-            //             pointer = parent.parent
-            //         })
-            //     }
-
-            //     db.query('UPDATE post SET order = 0 WHERE id = ?', pointer, (res, err) => {
-            //         if(err) console.log(err)
-            //         console.log(res)
-            //     })
-
-            // }
-
             let postId = r.insertId
+
+            if(parentId){
+                db.query('SELECT * from post WHERE id = ?', parentId, (err, res) =>{
+                    if(!res[0].parent){
+                        db.query(`UPDATE post SET top_parent = ? WHERE id = ${postId}`, res[0].id)
+                        db.query('UPDATE post SET bump = 0 WHERE id = ?', res[0].id)
+                    }
+                    else{
+                        db.query(`UPDATE post SET top_parent = ? WHERE id = ${postId}`, res[0].top_parent)
+                        db.query('UPDATE post SET bump = 0 WHERE id = ?', res[0].top_parent)
+                    }
+                })
+            }
             
             db.query('INSERT INTO post_image SET ?', {image: image, post_id: postId}, (e, r) =>{if(e) return})
             db.query('UPDATE post SET bump = bump + 1 WHERE parent IS NULL')
