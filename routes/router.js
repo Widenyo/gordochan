@@ -6,8 +6,6 @@ const {promisify} = require('util')
 const jwt = require('jsonwebtoken')
 const setPfp = require('../controllers/setPfp')
 const postController = require('../controllers/postController')
-const multer = require('multer')
-const upload = multer({dest: '/public/images'})
 const getRandomBanner = require('../controllers/getRandomBanner')
 
 
@@ -36,7 +34,7 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
                     } 
                     if(result){
                         console.log(result)
-                        if(result.length === 0) res.render('index', {user: user, posts: false, banner: getRandomBanner()});
+                        if(result.length === 0) return res.render('index', {user: user, posts: false, banner: getRandomBanner()});
                         let posts = result.map(p =>{
                             return {
                                 post_id: p.post_id,
@@ -50,14 +48,13 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
                                 parent: p.parent
                             }
                         })
-                        res.render('index', {user: user, posts: posts, banner: getRandomBanner()});
+                        return res.render('index', {user: user, posts: posts, banner: getRandomBanner()});
                     }
                 })
             }
             else return res.redirect('/login')
         })
     }catch(e){
-        console.log(e)
         return res.redirect('/login')
     }
   });

@@ -70,7 +70,7 @@ exports.createPost = async (req, res, next) => {
             let postId = r.insertId
             
             db.query('INSERT INTO post_image SET ?', {image: image, post_id: postId}, (e, r) =>{if(e) return})
-            //db.query('UPDATE post SET order = order + 1 WHERE parent = NULL')
+            db.query('UPDATE post SET bump = bump + 1 WHERE parent IS NULL')
 
 
             next()

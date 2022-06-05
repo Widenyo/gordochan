@@ -52,7 +52,6 @@ exports.login = async (req, res) => {
         }
     })
     }catch(e){
-        console.log(e)
         return res.render('login', {error: true})
     }
 
@@ -67,7 +66,6 @@ exports.isAuthenticated = async (req, res, next) => {
                 else return res.redirect('/login')
             })
         }catch(e){
-            console.log(e)
             return res.redirect('/login')
         }
     }
