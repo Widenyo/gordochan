@@ -10,10 +10,10 @@ const {promisify} = require('util')
 
 exports.register = async (req, res) => {
     const {user, password} = req.body
+
     try{
     const salt = await bcrypt.genSalt()
     let hashedPass = await bcrypt.hash(password, salt)
-    console.log(req.headers)
     db.query('INSERT INTO users SET ?', {user: user, password: hashedPass}, (e, r) =>{
         if(e){
             res.redirect('/register')
@@ -22,12 +22,14 @@ exports.register = async (req, res) => {
     })
     }catch(e){
         console.log('Se produjo un error inesperado.')
-        res.redirect('/')
+        res.redirect('/register')
     }
 }
 
 exports.login = async (req, res) => {
     let {user, password} = req.body
+
+    console.log(req.connection.remoteAddress)
 
     if(!user || !password){
         return res.render('login', {error: true})
