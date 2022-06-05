@@ -29,7 +29,8 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     let {user, password} = req.body
 
-    console.log(req.ip)
+    var ip = req.headers['x-forwarded-for']
+    console.log(ip)
 
     if(!user || !password){
         return res.render('login', {error: true})
