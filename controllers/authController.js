@@ -29,7 +29,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     let {user, password} = req.body
 
-    console.log(req.connection.remoteAddress)
+    console.log(req.ip)
 
     if(!user || !password){
         return res.render('login', {error: true})
