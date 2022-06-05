@@ -31,6 +31,7 @@ exports.login = async (req, res) => {
 
     var ip = req.headers['X-Forwarded-For']
     console.log(ip)
+    console.log(req.ip)
 
     if(!user || !password){
         return res.render('login', {error: true})
