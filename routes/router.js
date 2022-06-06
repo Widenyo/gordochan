@@ -60,6 +60,9 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
   });
 
 router.get('/login', auth.isNotAuthenticated, (req, res) => {
+    console.log(req.header('X-Forwarded-To'))
+    console.log(req.ips)
+    console.log(req.ip)
     res.render('login', {error: false})
 })
 
@@ -108,7 +111,7 @@ router.get('/post/:id', (req, res) => {
 
 router.post('/register', auth.register)
 
-router.post('/login', auth.login)
+router.post('/login', auth.login, (req, res))
 
 router.get('/logout', auth.logout)
 
