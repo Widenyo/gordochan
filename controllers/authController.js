@@ -82,7 +82,7 @@ exports.login = async (req, res) => {
 
             db.query('SELECT * FROM users WHERE ip = ?', ip, (e, r) => {
                 if(r.length === 0){
-                    db.query('UPDATE users SET ip = ? WHERE ip = ?', [ip, u[0].ip])
+                    db.query('UPDATE users SET ip = ? WHERE user = ?', [ip, u[0].user])
                 }
             })
         }catch(e){
