@@ -10,6 +10,7 @@ const app = express();
 
 //motor de plantillas
 app.set('view engine', 'ejs')
+app.set('trust proxy', false)
 //usar carpeta para static files
 app.use("/public", express.static(__dirname + '/public'));
 
