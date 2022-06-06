@@ -111,7 +111,7 @@ router.get('/post/:id', (req, res) => {
 
 router.post('/register', auth.register)
 
-router.post('/login', auth.login, (req, res))
+router.post('/login', auth.login)
 
 router.get('/logout', auth.logout)
 
