@@ -7,6 +7,8 @@ const jwt = require('jsonwebtoken')
 const setInfo = require('../controllers/setInfo')
 const postController = require('../controllers/postController')
 const getRandomBanner = require('../controllers/getRandomBanner')
+const { deletePost } = require('../controllers/adminTools/postHandler')
+const { ban } = require('../controllers/adminTools/ban')
 
 
 
@@ -60,9 +62,6 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
   });
 
 router.get('/login', auth.isNotAuthenticated, (req, res) => {
-    console.log(req.header('X-Forwarded-To'))
-    console.log(req.ips)
-    console.log(req.ip)
     res.render('login', {error: false})
 })
 
@@ -70,11 +69,13 @@ router.get('/register', auth.isNotAuthenticated, (req, res) => {
     res.render('register')
 })
 
-router.get('/post/:id', (req, res) => {
+router.get('/post/:id', auth.isAuthenticated, async (req, res) => {
 
     const {id} = req.params
 
-    db.query('SELECT * FROM post JOIN post_image ON post_id = post.id WHERE post.id = ?' , id, (err, r) => {
+
+
+    db.query('SELECT * FROM post JOIN post_image ON post_id = post.id WHERE post.id = ?' , id, async (err, r) => {
         if(r){
             if(r.length === 0) return res.render('post', {post: false, banner: getRandomBanner() }, )
             let post = r[0]
@@ -89,13 +90,21 @@ router.get('/post/:id', (req, res) => {
                 } 
             })
 
-            db.query('SELECT * FROM users WHERE id = ?', post.user_id, (err, r) => {
+            db.query('SELECT * FROM users WHERE id = ?', post.user_id, async (err, r) => {
                 if(r){
                     let user = r[0]
                     
                     let postData = {...post, user: {user_id: user.id, user: user.user, avatar: user.avatar}}
 
-                    return res.render('post', {post: postData, banner: getRandomBanner()} )
+                    try{
+                        const decode = await promisify(jwt.verify)(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
+                        db.query('SELECT * FROM users WHERE admin = 1 AND id = ?', [decode.id], (err, r) =>{
+                            if(r.length > 0) return res.render('post', {post: postData, banner: getRandomBanner(), admin: true} )
+                            else return res.render('post', {post: postData, banner: getRandomBanner(), admin: false} )
+                        })
+                    } catch(e){
+                        return res.render('/')
+                    }
                 }
                 if(err) console.log(err)
             })
@@ -103,6 +112,28 @@ router.get('/post/:id', (req, res) => {
         } 
         if(err) console.log(err)
     })
+})
+
+router.get('/profile/:id', auth.isAuthenticated, async (req, res) => {
+    let {id} = req.params
+
+    db.query('SELECT * FROM users WHERE id = ?', id, async (err, r) => {
+        if(r.length !== 0){
+            let user = r[0]
+            try{
+                const decode = await promisify(jwt.verify)(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
+                db.query('SELECT * FROM users WHERE admin = 1 AND id = ?', [decode.id], (err, r) =>{
+                    if(r.length !== 0) return res.render('profile', {user: user, banner: getRandomBanner(), admin: true} )
+                    else return res.render('profile', {user: false, banner: getRandomBanner(), admin: false} )
+                })
+            } catch(e){
+                return res.render('/')
+            }
+
+        }
+        else return res.render('profile', {user: false, banner: getRandomBanner(), admin: false }, )
+    })
+
 })
 
 
@@ -113,24 +144,30 @@ router.post('/register', auth.register)
 
 router.post('/login', auth.login)
 
-router.get('/logout', auth.logout)
+router.get('/logout', auth.isAuthenticated, auth.logout)
 
-router.post('/changePfp', setInfo.uploadPfp.single('avatar'), (req, res) =>{
+router.post('/changePfp', auth.isAuthenticated, setInfo.uploadPfp.single('avatar'), (req, res) =>{
     res.redirect('/')
 })
 
-router.post('/updateInfo', setInfo.updateInfo, (req, res) => {
+router.post('/updateInfo', auth.isAuthenticated, setInfo.updateInfo, (req, res) => {
     res.redirect('/')
 })
 
 
 
-router.post('/post', postController.uploadImg.single('image'), postController.createPost, (req, res) => {
+router.post('/post', auth.isAuthenticated, postController.uploadImg.single('image'), postController.createPost, (req, res) => {
     res.redirect('/')
 })
-router.post('/post/reply/:parentId', postController.uploadImg.single('image'), postController.createPost, (req, res) =>{
+router.post('/post/reply/:parentId', auth.isAuthenticated, postController.uploadImg.single('image'), postController.createPost, (req, res) =>{
     res.redirect('/post/' +  req.params.parentId)
 })
+
+//ADMIN METHODS//
+
+router.get('/post/deletepost/:id', auth.isAuthenticated, auth.isAdmin, deletePost)
+
+router.get('/ban/:id', auth.isAuthenticated, auth.isAdmin, ban)
 
 
 

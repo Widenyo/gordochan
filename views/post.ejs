@@ -38,6 +38,9 @@
                     <img class="img" src="../public/images/<%=post.image%>">
                     <%} %>
                 </div>
+                <% if(admin){ %>
+                    <a href="./deletepost/<%=post.post_id%>">Borrar</a>
+                <%} %>
             </div>
             <% }else{ %>
 
@@ -55,6 +58,9 @@
                         <img class="img" src="../public/images/<%=post.image%>">
                         <%} %>
                     </div>
+                    <% if(admin){ %>
+                        <a href="./deletepost/<%=post.post_id%>">Borrar</a>
+                    <%} %>
                 </div>
             <% } %>
 

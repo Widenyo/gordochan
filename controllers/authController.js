@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const db = require('../database/db')
 const {promisify} = require('util')
-
+const axios = require('axios')
 
 
 
@@ -12,18 +12,48 @@ exports.register = async (req, res) => {
     const {user, password} = req.body
 
     try{
-    const salt = await bcrypt.genSalt()
-    let hashedPass = await bcrypt.hash(password, salt)
-    db.query('INSERT INTO users SET ?', {user: user, password: hashedPass}, (e, r) =>{
-        if(e){
-            res.redirect('/register')
-        }
-        else res.redirect('/')
-    })
+        const ipReq = await axios.get('https://json.geoiplookup.io/')
+        const ip = ipReq.data.ip
+        db.query('SELECT * FROM users WHERE ip = ?', ip, async (e, r) => {
+            if(e){
+                console.log(e)
+                return res.render('register', {error: {unknownError: true}})
+            }
+            let banned = false
+            r.forEach(u => {
+                console.log(u)
+                if(u.banned) banned = true
+            })
+            if(banned) return res.render('register', {error: {banned: true}})
+            if(r.length >= 3) return res.render('register', {error: {ipError: true}})
+
+            try{
+
+                const salt = await bcrypt.genSalt()
+                let hashedPass = await bcrypt.hash(password, salt)
+                db.query('INSERT INTO users SET ?', {user: user, password: hashedPass, ip: ip}, (e, r) =>{
+                    if(e){
+                        console.log(e)
+                        return res.render('register', {error: {alreadyExists: true}})
+                    }
+                    else res.redirect('/')
+                })
+                }catch(e){
+                    console.log('Se produjo un error inesperado.')
+                    console.log(e)
+                    res.redirect('/register')
+                }
+
+
+
+        })
     }catch(e){
-        console.log('Se produjo un error inesperado.')
-        res.redirect('/register')
+        return res.render('register.js', {error: {unknownError: true}})
     }
+
+    
+    
+
 }
 
 exports.login = async (req, res) => {
@@ -38,11 +68,26 @@ exports.login = async (req, res) => {
     db.query('SELECT * FROM users WHERE user = ?', [user], async (e, u) =>{
         if(u.length === 0 || !(await bcrypt.compare(password, u[0].password))) return res.render('login', {error: true})
         else{
+            if(u.banned) return res.render('login', {error: {banned: true}})
             const selectedUser = u[0]
             const id = selectedUser.id
             const token = jwt.sign({id:id}, process.env.ACCESS_TOKEN_SECRET, {
                 expiresIn: '7d'
             })
+
+            try{
+
+                const ipReq = await axios.get('https://json.geoiplookup.io/')
+                const ip = ipReq.data.ip
+
+            db.query('SELECT * FROM users WHERE ip = ?', ip, (e, r) => {
+                if(r.length === 0){
+                    db.query('UPDATE users SET ip = ? WHERE ip = ?', [ip, u[0].ip])
+                }
+            })
+        }catch(e){
+            console.log(e)
+        }
 
             const cookiesOptions = {
                 expires: new Date(Date.now()+604800*24*60*60*1000),
@@ -63,8 +108,15 @@ exports.isAuthenticated = async (req, res, next) => {
     if(req.cookies.jwt){
         try{
             const decode = await promisify(jwt.verify)(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
-            db.query('SELECT * FROM users WHERE id = ?', [decode.id], (err, res)=>{
-                if(res) return next()
+            db.query('SELECT * FROM users WHERE id = ?', [decode.id], (err, r)=>{
+                    if(r){
+
+                    if(r[0].banned){
+                        res.clearCookie('jwt')
+                        return res.render('login', {error: true})
+                    }
+                    else return next()
+                } 
                 else return res.redirect('/login')
             })
         }catch(e){
@@ -79,6 +131,23 @@ exports.isAuthenticated = async (req, res, next) => {
 exports.isNotAuthenticated = async (req, res, next) => {
     if(req.cookies.jwt) return res.redirect('/')
     else next()
+}
+
+exports.isAdmin = async (req, res, next) => {
+    if(req.cookies.jwt){
+        try{
+            const decode = await promisify(jwt.verify)(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
+            db.query('SELECT * FROM users WHERE id = ? AND admin = 1', [decode.id], (err, r)=>{
+                if(r.length > 0) return next()
+                else return res.redirect('/')
+            })
+        }catch(e){
+            return res.redirect('/')
+        }
+    }
+    else{
+        return res.redirect('/')
+    }
 }
 
 exports.logout = (req, res) => {

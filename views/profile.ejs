@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/styles/index.css">
+    <title>gordochan.xyz</title>
+</head>
+<body>
+    <a href="../../">Volver</a><br>
+    <center><img id="banner" src="../public/banners/<%=banner%>"></center>
+    <marquee><img src="../public/siteImages/GORDOCHAN TITLE.gif"></marquee>
+
+    <%if(user){ %>
+    <h1>Perfil de <%= user.user %></h1>
+    <img src="../public/avatar/<%=user.avatar%>" id="avatar">
+    <br>
+    <span>Firma actual: <%=user.signature%></span>
+    <% if(admin){ %>
+        <br>
+        <a href="/ban/<%=user.id%>">Banear</a>
+    <% } %>
+
+    <% if(user.banned){ %>
+        <br>
+        <h2>ESTE USUARIO FUE BANEADO</h2>
+    <% } %>
+
+    <% }else{ %>
+        <h1>ESE USUARIO NO EXISTE XD</h1>
+    <% } %>
+    
+
+
+</body>
+</html>

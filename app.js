@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cookieParser = require('cookie-parser')
+const cors = require('cors')
 
 
 
@@ -9,8 +10,8 @@ const app = express();
 
 
 //motor de plantillas
+app.use(cors())
 app.set('view engine', 'ejs')
-app.enable('trust proxy')
 //usar carpeta para static files
 app.use("/public", express.static(__dirname + '/public'));
 
@@ -24,6 +25,6 @@ app.use(cookieParser())
 app.use('/', require('./routes/router'))
 
 
-app.listen(process.env.PORT, '0.0.0.0', () => {
+app.listen(process.env.PORT, () => {
   console.log(`Listening on port ${process.env.PORT}`);
 });

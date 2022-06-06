@@ -15,6 +15,24 @@
     
         <label for="contraseña">Contraseña</label> 
         <input type="password" name="password" placeholder="Contraseña...">
+        <% if(typeof error !== 'undefined'){ %>
+            <%if(error.ipError){ %>
+                <span>NO PODES TENER MAS DE 3 CUENTAS. SI CREES QUE SE TRATA DE UN ERROR AVISAME.</span>
+            <% } %>
+
+            <% if(error.unknownError){ %>
+                <span>ERROR DESCONOCIDO. INTENTALO DE NUEVO MAS TARDE</span>
+           <% } %>
+
+           <% if(error.alreadyExists){ %>
+            <span>ESE USUARIO YA EXISTE</span>
+       <% } %>
+
+           <% if(error.banned){ %>
+            <span>ESTAS BANEADO LOL.</span>
+       <% } %>
+
+        <%   } %> 
         <button type="submit">REGISTRAR</button>
         </form>
         <a href="/login">Si ya estas registrado deja de joder .l.</a>
