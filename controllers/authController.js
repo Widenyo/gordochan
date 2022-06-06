@@ -29,7 +29,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     let {user, password} = req.body
 
-    var ip = req.headers['X-Forwarded-For']
+    var ip = req.headers['x-forwarded-for']
     console.log(ip)
     console.log(req.ip)
 
