@@ -53,3 +53,13 @@ body{
     margin-left: 5px;
     font-size: 10px;
 }
+
+
+@media (max-width: 600px) {
+        #insulto{
+            display: block;
+        }
+        iframe{
+            display: none;
+        }
+}
