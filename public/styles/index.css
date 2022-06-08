@@ -16,9 +16,10 @@
     object-fit: cover;
 }
 
+
 .post{
     border: 1px solid black;
-    display: inline-block;
+    display: inline-table;
     background-color: white;
     border: double 2px;
     color: black;
