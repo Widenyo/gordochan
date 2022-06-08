@@ -55,11 +55,12 @@ body{
 }
 
 
-@media (max-width: 600px) {
-        #insulto{
-            display: block;
-        }
+@media (max-width: 650px) {
         iframe{
             display: none;
         }
+}
+
+#insulto{
+    display: none;
 }
