@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const db = require('../database/db')
 const {promisify} = require('util')
-const axios = require('axios')
 
 
 
@@ -11,27 +10,13 @@ const axios = require('axios')
 exports.register = async (req, res) => {
     const {user, password} = req.body
 
-    try{
-        const ipReq = await axios.get('https://json.geoiplookup.io/')
-        const ip = ipReq.data.ip
-        db.query('SELECT * FROM users WHERE ip = ?', ip, async (e, r) => {
-            if(e){
-                console.log(e)
-                return res.render('register', {error: {unknownError: true}})
-            }
-            let banned = false
-            r.forEach(u => {
-                console.log(u)
-                if(u.banned) banned = true
-            })
-            if(banned) return res.render('register', {error: {banned: true}})
-            if(r.length >= 3) return res.render('register', {error: {ipError: true}})
+    
 
             try{
 
                 const salt = await bcrypt.genSalt()
                 let hashedPass = await bcrypt.hash(password, salt)
-                db.query('INSERT INTO users SET ?', {user: user, password: hashedPass, ip: ip}, (e, r) =>{
+                db.query('INSERT INTO users SET ?', {user: user, password: hashedPass}, (e, r) =>{
                     if(e){
                         console.log(e)
                         return res.render('register', {error: {alreadyExists: true}})
@@ -43,13 +28,6 @@ exports.register = async (req, res) => {
                     console.log(e)
                     res.redirect('/register')
                 }
-
-
-
-        })
-    }catch(e){
-        return res.render('register.js', {error: {unknownError: true}})
-    }
 
     
     
@@ -74,20 +52,6 @@ exports.login = async (req, res) => {
             const token = jwt.sign({id:id}, process.env.ACCESS_TOKEN_SECRET, {
                 expiresIn: '7d'
             })
-
-            try{
-
-                const ipReq = await axios.get('https://json.geoiplookup.io/')
-                const ip = ipReq.data.ip
-
-            db.query('SELECT * FROM users WHERE ip = ?', ip, (e, r) => {
-                if(r.length === 0){
-                    db.query('UPDATE users SET ip = ? WHERE user = ?', [ip, u[0].user])
-                }
-            })
-        }catch(e){
-            console.log(e)
-        }
 
             const cookiesOptions = {
                 expires: new Date(Date.now()+604800*24*60*60*1000),
