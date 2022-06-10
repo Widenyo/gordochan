@@ -120,6 +120,7 @@ exports.isAuthenticated = async (req, res, next) => {
                 else return res.redirect('/login')
             })
         }catch(e){
+            res.clearCookie('jwt')
             return res.redirect('/login')
         }
     }
