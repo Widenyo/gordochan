@@ -12,6 +12,6 @@ db.connect( (e) => {
     console.log('DB connected.')
 })
 
-db.on('error', db.connect())
+db.on('error', () => db.connect())
 
 module.exports = db
