@@ -44,7 +44,10 @@ exports.login = async (req, res) => {
 
     try{
     db.query('SELECT * FROM users WHERE user = ?', [user], async (e, u) =>{
-        if(e) console.log(e)
+        if(e){
+            console.log(e)
+            return res.redirect('taringa.net')
+        }
         if(u) console.log(u)
         if(u.length === 0 || !(await bcrypt.compare(password, u[0].password))) return res.render('login', {error: true})
         else{
