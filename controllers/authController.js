@@ -46,6 +46,10 @@ exports.login = async (req, res) => {
     db.query('SELECT * FROM users WHERE user = ?', [user], async (e, u) =>{
         if(u.length === 0 || !(await bcrypt.compare(password, u[0].password))) return res.render('login', {error: true})
         else{
+            if(e){
+                console.log(e)
+                return res.redirect('https://www.discoverykidsplus.com/')
+            }
             if(u.banned) return res.render('login', {error: {banned: true}})
             const selectedUser = u[0]
             const id = selectedUser.id
