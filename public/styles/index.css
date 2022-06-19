@@ -12,18 +12,18 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    display: inline-block;
     object-fit: cover;
 }
 
 
 .post{
     border: 1px solid black;
-    display: inline-table;
     background-color: white;
-    border: double 2px;
     color: black;
-    font-size: 14px;
+    width: fit-content;
+    max-width: 80%;
+    word-wrap: break-word;
+    margin-left: 5px;
 }
 
 .img{
@@ -39,6 +39,8 @@
 .innerPost{
     margin: 5px;
 }
+
+
 
 iframe{
     display: block;
