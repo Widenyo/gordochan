@@ -73,11 +73,20 @@ body{
 }
 
 .postear{
-    align-self: flex-end;
     background-color: white;
     color: black;
     padding: 10px;
     border: 1px solid gray;
+}
+
+.postear > *{
+    display: block;
+}
+
+.fixed{
     position: fixed;
-    margin: 100;
+    align-self: flex-end;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
 }

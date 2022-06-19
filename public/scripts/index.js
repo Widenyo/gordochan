@@ -19,6 +19,7 @@ cambiarFuente.addEventListener(('click'), () => {
 cambiarVista.addEventListener(('click'), () => {
     for(let post of posts){
         if(post.style.display === 'inline-table'){
+            console.log('a')
             post.style.width = 'fit-content';
             post.style.display = 'block';
             post.style.maxWidth = '80%';
