@@ -33,8 +33,10 @@
     <br>
 
     <p>SI LOS ESTILOS SE ROMPEN APRETA CTRL + F5 XD</p>
-    <button id="cambiarFuente">CAMBIAR FUENTE</button>
-    <button id="vista">CAMBIAR VISTA</button>
+    <div class="settings">
+        <button id="cambiarFuente">CAMBIAR FUENTE</button>
+        <button id="vista">CAMBIAR VISTA</button>
+    </div>
 
     <br>
 
@@ -44,8 +46,8 @@
 
 
     <!---- FORM PARA POSTEAR ------->
-    <form action="/post" enctype="multipart/form-data" method="POST">
-        <label for="post">en qué está pensando <%= user.user %> ?</label><input type="text" name="content" id="text">
+    <form action="/post" enctype="multipart/form-data" method="POST" class='postear'>
+        <label for="post">¿En qué está pensando <%= user.user %>?</label><textarea type="text" name="content" id="text"></textarea>
         <br>
         <label for="anonimo">Anónimo</label><input type="checkbox" name="anon" id="anontext">
         <br>

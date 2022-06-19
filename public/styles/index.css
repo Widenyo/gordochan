@@ -52,6 +52,8 @@ iframe{
 body{
     background-image: url(https://zhalyra.files.wordpress.com/2011/04/vampires-stars-sparkle-animation.gif);
     color: white;
+    display: flex;
+    flex-direction: column;
 }
 
 .signatureDiv_signature{
@@ -68,4 +70,14 @@ body{
 
 #insulto{
     display: none;
+}
+
+.postear{
+    align-self: flex-end;
+    background-color: white;
+    color: black;
+    padding: 10px;
+    border: 1px solid gray;
+    position: fixed;
+    margin: 100;
 }
