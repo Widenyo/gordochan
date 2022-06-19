@@ -17,13 +17,16 @@
 
 
 .post{
-    border: 1px solid black;
+    border: 1px dashed darkgray;
     background-color: white;
     color: black;
     width: fit-content;
+    display: block;
     max-width: 80%;
+    min-width: 25%;
     word-wrap: break-word;
-    margin-left: 5px;
+    margin-left: 10px;
+    margin-bottom: 10px;
 }
 
 .img{
