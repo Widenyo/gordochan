@@ -1,4 +1,4 @@
-const mysql = require('mysql')
+const mysql = require('serverless-mysql')
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
