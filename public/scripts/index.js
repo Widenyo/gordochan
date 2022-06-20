@@ -7,6 +7,19 @@ const cambiarFuente = document.getElementById('cambiarFuente')
 const insulto = document.getElementById('insulto')
 const cambiarVista = document.getElementById('vista')
 
+const fixedVisible = document.getElementById('fixedVisible')
+const showMenu = document.getElementById('showMenu')
+
+const fixedMenu = document.getElementById('fixedMenu')
+
+const fixedHidden = document.getElementById('fixedHidden')
+const settings = document.getElementById('settings')
+
+const postButton = document.getElementById('postButton')
+const hideMenu = document.getElementById('hideMenu')
+
+const postMenu = document.getElementById('postMenu')
+
 
 cambiarFuente.addEventListener(('click'), () => {
     for (let post of posts) {
@@ -33,6 +46,27 @@ cambiarVista.addEventListener(('click'), () => {
         }
     }
 
+})
+
+
+showMenu.addEventListener('click', () => {
+    fixedMenu.style.display = 'flex'
+    showMenu.style.display = 'none'
+})
+
+hideMenu.addEventListener('click', () => {
+    fixedMenu.style.display = 'none'
+    showMenu.style.display = 'block'
+})
+
+postButton.addEventListener('click', () => {
+    if(postMenu.style.display === 'flex') postMenu.style.display = 'none'
+    else postMenu.style.display = 'flex'
+})
+
+settingsButton.addEventListener('click', () => {
+    if(settings.style.display === 'flex') settings.style.display = 'none'
+    else settings.style.display = 'flex'
 })
 
 

@@ -31,20 +31,32 @@
 
 
 
-    
-    <br>
-
     <p>SI LOS ESTILOS SE ROMPEN APRETA CTRL + F5 XD</p>
     <div class="fixed">
-        <form action="/post" enctype="multipart/form-data" method="POST" class='postear'>
-            <label for="post">¿En qué está pensando <%= user.user %>?</label><textarea type="text" name="content" id="text"></textarea>
-            <label for="anonimo">Anónimo</label><input type="checkbox" name="anon" id="anontext">
-            <input type="file" name="image" accept="image/png, image/jpeg, image/gif" id="imageInput">
-            <button type="submit">postear</button>
-        </form>
-        <div class="settings">
-            <button id="cambiarFuente">CAMBIAR FUENTE</button>
-            <button id="vista">CAMBIAR VISTA</button>
+
+        <div class="fixed_visible" id="fixedVisible">
+            <a href="javascript:;" id="showMenu">▼</a>
+        </div>
+
+        <div class="fixed_menu" id="fixedMenu">
+            <a href="javascript:;" id="postButton">✎</a>
+            <a href="javascript:;" id="settingsButton">⚙</a>
+            <a href="javascript:;" id="hideMenu">▲</a>
+        </div>
+
+        <div class="fixed_hidden" id="fixedHidden">
+            <div class="settings" id="settings">
+                <button id="cambiarFuente">CAMBIAR FUENTE</button>
+                <button id="vista">CAMBIAR VISTA</button>
+            </div>
+
+            <form action="/post" enctype="multipart/form-data" method="POST" class='postear' id="postMenu">
+                <label for="post">¿En qué está pensando <%= user.user %>?</label><textarea type="text" name="content" id="text"></textarea>
+                <label for="anonimo">Anónimo</label><input type="checkbox" name="anon" id="anontext">
+                <input type="file" name="image" accept="image/png, image/jpeg, image/gif" id="imageInput">
+                <button type="submit">postear</button>
+            </form>
+
         </div>
     </div>
 
