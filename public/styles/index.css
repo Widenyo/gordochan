@@ -15,7 +15,6 @@
     object-fit: cover;
 }
 
-
 .post{
     border: 1px dashed darkgray;
     background-color: white;
@@ -111,7 +110,7 @@ body{
     font-size: 24px;
 }
 
-#hideMenu , #showMenu{
+#hideMenu, #showMenu{
     margin-top: 3px;
 }
 
