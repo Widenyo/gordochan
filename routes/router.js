@@ -10,6 +10,7 @@ const getRandomBanner = require('../controllers/getRandomBanner')
 const { deletePost } = require('../controllers/adminTools/postHandler')
 const { ban } = require('../controllers/adminTools/ban')
 
+const paginated = 25
 
 
 
@@ -30,7 +31,59 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
                     email: result[0].email,
                     avatar: result[0].avatar
                 }
-                db.query("SELECT * FROM users INNER JOIN post ON users.id = post.user_id JOIN post_image ON post_id = post.id ORDER BY bump ASC", (err, result) => {
+                db.query("SELECT * FROM users INNER JOIN post ON users.id = post.user_id JOIN post_image ON post_id = post.id WHERE top_parent IS NULL ORDER BY bump LIMIT " + paginated, (err, result) => {
+                    if(err){
+                        console.log(err)
+                    } 
+                    if(result){
+                        if(result.length === 0) return res.render('index', {user: user, posts: false, banner: getRandomBanner()});
+                        let posts = result.map(p =>{
+                            return {
+                                post_id: p.post_id,
+                                content: p.content,
+                                date: p.date,
+                                user_id: p.user_id,
+                                user: p.user,
+                                avatar: p.avatar,
+                                anonimo: p.anonimo,
+                                image: p.image,
+                                parent: p.parent,
+                                signature: p.signature
+                            }
+                        })
+                        return res.render('index', {user: user, posts: posts, banner: getRandomBanner()});
+                    }
+                })
+            }
+            else return res.redirect('/login')
+        })
+    }catch(e){
+        return res.redirect('/login')
+    }
+  });
+
+  router.get("/:page", auth.isAuthenticated, async (req, res) => {
+
+    const page = parseInt(req.params.page)
+
+    const startSelect = paginated * (page - 1)
+    const endSelect = paginated * page
+
+    if(page <= 0 || !(parseInt(page))) return res.redirect('https://taringa.net')
+    if(page === 1) return res.redirect('/')
+
+
+    try{
+        const decode = await promisify(jwt.verify)(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
+        db.query('SELECT * FROM users WHERE id = ?', [decode.id], (err, result)=>{
+            if(result){
+                let user = {
+                    id: result[0].id,
+                    user: result[0].user,
+                    email: result[0].email,
+                    avatar: result[0].avatar
+                }
+                db.query(`SELECT * FROM users INNER JOIN post ON users.id = post.user_id JOIN post_image ON post_id = post.id WHERE top_parent IS NULL ORDER BY bump LIMIT ${startSelect}, ${endSelect}`, (err, result) => {
                     if(err){
                         console.log(err)
                     } 
