@@ -62,14 +62,15 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
     }
   });
 
-  router.get("/:page", auth.isAuthenticated, async (req, res) => {
+  router.get("/page/:page", auth.isAuthenticated, async (req, res) => {
 
     const page = parseInt(req.params.page)
+
 
     const startSelect = paginated * (page - 1)
     const endSelect = paginated * page
 
-    if(page <= 0 || !(parseInt(page))) return res.redirect('https://taringa.net')
+    if(page <= 0 || !(parseInt(page))) return res.redirect('https://www.youtube.com/watch?v=03SIKP4sVfY')
     if(page === 1) return res.redirect('/')
 
 
