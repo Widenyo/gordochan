@@ -91,8 +91,7 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
                         console.log(err)
                     } 
                     if(result){
-                        if(result.length === 0) return res.render('index', {user: user, posts: false, banner: getRandomBanner()});
-                        let posts = result.map(p =>{
+                        let posts = result.length !== 0 && result.map(p =>{
                             return {
                                 post_id: p.post_id,
                                 content: p.content,
@@ -108,7 +107,8 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
                         })
                         db.query("SELECT COUNT(*) FROM post WHERE top_parent IS NULL", (err, result) => {
                             let lastPage = Math.ceil(result[0]['COUNT(*)']/paginated)
-                            return res.render('index', {user: user, posts: posts, banner: getRandomBanner(), page: page, lastPage: lastPage});
+                            if(page > lastPage) return res.redirect('/page/' + lastPage)
+                            else return res.render('index', {user: user, posts: posts, banner: getRandomBanner(), page: page, lastPage: lastPage});
                         })
                     }
                 })
