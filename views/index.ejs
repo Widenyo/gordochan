@@ -101,11 +101,35 @@
                             <%} %>
                     </div>
                 </div>
-    <% }})}else{ %>
+            </div>
+
+    <% }}) %>
+    <div class="iterator">
+        <% if(page !== 1 && page > 6){ %>
+            <a href="/page/1"><<</a>
+        <% } %>
+        <% for(let i = page-5; i <= page+5; i++){ %>
+            <% if (i <= 0){ %>
+                <% i = 1 %>
+           <% } %>
+            <% if(i > lastPage && i !== 1){ %>
+                <% break %>
+           <% } %>
+            <% if(i === page){ %>
+                <span><%= i %></span>
+            <% }else{ %>
+                <a href="/page/<%=i%>"><%=i%></a>
+            <% } %> 
+    
+        <%} %>
+        <% if(page !== lastPage && page < lastPage-5){ %>
+            <a href="/page/<%=lastPage%>">>></a>
+        <% } %>
+        </div>
+<% }else{ %>
         <h1>NO HAY POSTS TODAVÍA. SOYEZ LE PREMIER</h1>
    <% } %>
    <iframe src="https://www.retrogames.cc/embed/8962-kung-fu-master.html" width="600" height="450" frameborder="no" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" scrolling="no"></iframe>
-    </div>
 
 
 <script src="../public/scripts/index.js"></script>
