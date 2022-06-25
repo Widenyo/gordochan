@@ -60,6 +60,17 @@
         </div>
     </div>
 
+    <div>
+        <form action="/post" enctype="multipart/form-data" method="POST" id="postMenu"><br>
+            <label for="post">¿En qué está pensando <%= user.user %>?</label><br><textarea type="text" name="content" id="text"></textarea><br>
+            <label for="anonimo">Anónimo</label><input type="checkbox" name="anon" id="anontext"><br>
+            <input type="file" name="image" accept="image/png, image/jpeg, image/gif" id="imageInput"><br>
+            <button type="submit">postear</button>
+        </form>
+    </div>
+
+
+
     <marquee><img src="../public/siteImages/GORDOCHAN TITLE.gif"></marquee>
 
 
