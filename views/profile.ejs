@@ -16,7 +16,8 @@
     <h1>Perfil de <%= user.user %></h1>
     <img src="../public/avatar/<%=user.avatar%>" id="avatar">
     <br>
-    <span>Firma actual: <%=user.signature%></span>
+    <p>Firma actual: <%=user.signature%></p>
+    <p>Miembro desde: <%=user.join_date%> </p>
     <% if(admin){ %>
         <br>
         <a href="/ban/<%=user.id%>">Banear</a>

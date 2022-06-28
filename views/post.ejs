@@ -30,7 +30,7 @@
                 <div class="innerPost">
                 <a href="../post/<%=post.post_id%>">>><%=post.post_id%></a><br>
                 <img class="avatar" src="../public/avatar/<%=post.user.avatar %>">
-                <p class="post_username"><%= post.user.user %></p>
+                <a href="/profile/<%=post.user_id%>" class="post_username"><%= post.user.user %></a>
                 <%if(post.parent){ %>
                     <p>Responde a: <a href="/post/<%=post.parent%>">>><%=post.parent%></a></p>
                    <% }%>
@@ -75,7 +75,7 @@
                         <div class="innerPost">
                         <a href="../post/<%=r.id%>">>><%=r.id%></a><br>
                         <img class="avatar" src="../public/avatar/<%=r.avatar%>">
-                        <p class="post_username"><%= r.user %></p>
+                        <a href="/profile/<%=r.user_id%>" class="post_username"><%= r.user %></a>
                         <p>Responde a: <a href="/post/<%=r.parent%>">>><%=r.parent%></a></p>
                         <p><%= r.date %><p>
                         <p><%= r.content %></p>

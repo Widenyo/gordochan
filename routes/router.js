@@ -41,7 +41,7 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
                             return {
                                 post_id: p.post_id,
                                 content: p.content,
-                                date: p.date,
+                                date: p.date.toLocaleTimeString('es', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
                                 user_id: p.user_id,
                                 user: p.user,
                                 avatar: p.avatar,
@@ -95,7 +95,7 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
                             return {
                                 post_id: p.post_id,
                                 content: p.content,
-                                date: p.date,
+                                date: p.date.toLocaleTimeString('es', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
                                 user_id: p.user_id,
                                 user: p.user,
                                 avatar: p.avatar,
@@ -178,12 +178,16 @@ router.get('/profile/:id', auth.isAuthenticated, async (req, res) => {
 
     db.query('SELECT * FROM users WHERE id = ?', id, async (err, r) => {
         if(r.length !== 0){
-            let user = r[0]
             try{
+                let user = {
+                    ...r[0],
+
+                    join_date: r[0].join_date.toLocaleDateString('es', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+                }
                 const decode = await promisify(jwt.verify)(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
                 db.query('SELECT * FROM users WHERE admin = 1 AND id = ?', [decode.id], (err, r) =>{
                     if(r.length !== 0) return res.render('profile', {user: user, banner: getRandomBanner(), admin: true} )
-                    else return res.render('profile', {user: false, banner: getRandomBanner(), admin: false} )
+                    else return res.render('profile', {user: user, banner: getRandomBanner(), admin: false} )
                 })
             } catch(e){
                 return res.render('/')

@@ -84,7 +84,7 @@
                 <div class="innerPost">
                     <a href="./post/<%=p.post_id%>">>><%=p.post_id%></a><br>
                     <img class="avatar" src="../public/avatar/<%=p.avatar %>">
-                    <p class="post_username"><%= p.user %></p>
+                    <a href="./profile/<%=p.user_id%>" class="post_username"><%= p.user %></a>
                     <p><%= p.date %><p>
                     <p><%= p.content %></p>
                     <% if(p.image){%>
