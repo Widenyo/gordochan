@@ -8,6 +8,7 @@
     <title>gordochan.xyz</title>
 </head>
 <body>
+    <div>
     <a href="../../">Volver</a><br>
     <center><img id="banner" src="../public/banners/<%=banner%>"></center>
     <marquee><img src="../public/siteImages/GORDOCHAN TITLE.gif"></marquee>
@@ -20,7 +21,7 @@
     <p>Miembro desde: <%=user.join_date%> </p>
     <% if(admin){ %>
         <br>
-        <a href="/ban/<%=user.id%>">Banear</a>
+        <a id="banear" href="/ban/<%=user.id%>">BANEAR (PELIGROSO)</a>
     <% } %>
 
     <% if(user.banned){ %>
@@ -32,7 +33,7 @@
         <h1>ESE USUARIO NO EXISTE XD</h1>
     <% } %>
     
-
+    </div>
 
 </body>
 </html>

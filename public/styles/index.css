@@ -140,3 +140,7 @@ body{
 .settings{
     display: none;
 }
+
+#banear{
+    font-size: 96px;
+}
