@@ -16,7 +16,7 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
 
     try{
 
-        const user = await getThisUserById(req, res)
+        const user = await getThisUserById(req)
 
         const posts = await getPosts(res, 1)
 

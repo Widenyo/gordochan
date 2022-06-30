@@ -17,7 +17,7 @@ router.get("/:page", auth.isAuthenticated, async (req, res) => {
 
 
     try{
-        const user = await getThisUserById(req, res)
+        const user = await getThisUserById(req)
         const posts = await getPosts(res, page)
         const lastPage = await getLastPage()
         return res.render('index', {user: user, posts: posts, banner: getRandomBanner(), page: page, lastPage: lastPage});
