@@ -18,9 +18,7 @@ router.get("/", auth.isAuthenticated, async (req, res) => {
 
         const user = await getThisUserById(req, res)
 
-        user.length === 0 && res.redirect('/login')
-
-        const posts = await getPosts(res, 0)
+        const posts = await getPosts(res, 1)
 
         const lastPage = await getLastPage()
 
