@@ -18,7 +18,7 @@ router.get('/:url', async (req, res) => {
     try{
         const videos = await youtubesearchapi.GetListByKeyword(`${url}`)
         id = videos.items[0].id
-        videoName = videos.items[0].title
+        videoName = videos.items[0].title.replace(/[\/\\.":*?<>{}]/g, '');
         console.log(videos)
       }catch(e){
         console.log(e)
