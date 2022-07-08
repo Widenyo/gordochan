@@ -12,10 +12,13 @@ router.get('/:url', async (req, res) => {
     const {url} = req.params
 
     let id = ""
+    let videoName = ""
 
     try{
         const videos = await youtubesearchapi.GetListByKeyword(`${url}`)
         id = videos.items[0].id
+        videoName = videos.items[0].title
+        console.log(videos)
       }catch(e){
         console.log(e)
         return res.send('ERROR XD')
@@ -31,7 +34,6 @@ router.get('/:url', async (req, res) => {
           })
       }catch(e){
         console.log(e)
-        message.channel.send('ERROR XD')
       }
 
       var stat = fs.statSync(`${__dirname}/../musica/lol.mp3`);
