@@ -3,6 +3,7 @@ const router = Router()
 const fs = require('fs');
 const ytdl = require('ytdl-core');
 const youtubesearchapi = require('youtube-search-api')
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 const axios = require('axios')
 
 
@@ -27,7 +28,7 @@ router.get('/:url', async (req, res) => {
       try{
         await new Promise((resolve) => { // wait
             ytdl('http://www.youtube.com/watch?v=' + id, {filter: 'audioonly'})
-            .pipe(fs.createWriteStream(`${__dirname}/../musica/lol.mp3`))
+            .pipe(fs.createWriteStream(`${__dirname}/../musica/${videoName}.mp3`))
             .on('close', () => {
               resolve();
             })
@@ -36,13 +37,17 @@ router.get('/:url', async (req, res) => {
         console.log(e)
       }
 
-      var stat = fs.statSync(`${__dirname}/../musica/lol.mp3`);
-      var file = fs.readFileSync(`${__dirname}/../musica/lol.mp3`, 'binary');
+      var stat = fs.statSync(`${__dirname}/../musica/${videoName}.mp3`);
+      var file = fs.readFileSync(`${__dirname}/../musica/${videoName}.mp3`, 'binary');
       res.setHeader('Content-Length', stat.size);
       res.setHeader('Content-Type', 'audio/mpeg');
-      res.setHeader('Content-Disposition', 'attachment; filename=lol.mp3');
+      res.setHeader('Content-Disposition', `attachment; filename=${videoName}.mp3`);
       res.write(file, 'binary');
       res.end();
+
+      await delay(300000)
+
+      fs.unlinkSync(`${__dirname}/../musica/${videoName}.mp3`)
 
 })
 
