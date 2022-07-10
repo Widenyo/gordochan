@@ -3,32 +3,32 @@ const router = Router()
 const fs = require('fs');
 const ytdl = require('ytdl-core');
 const youtubesearchapi = require('youtube-search-api')
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-const axios = require('axios')
+const getRandomBanner = require('../controllers/getRandomBanner');
+const getThisUserById = require('../functions/getters/getThisUserById');
+const { isAuthenticated } = require('../controllers/authController');
 
 
 
-router.get('/:url', async (req, res) => {
+router.get('/', isAuthenticated, async (req, res) => {
 
-    const {url} = req.params
+  const user = await getThisUserById(req)
 
-    let id = ""
-    let videoName = ""
+  return res.render('tomp3', {user: user, banner: getRandomBanner()});
+})
 
-    try{
-        const videos = await youtubesearchapi.GetListByKeyword(`${url}`)
-        id = videos.items[0].id
-        videoName = videos.items[0].title.replace(/[\/\\.":*?<>{}]/g, '');
-        console.log(videos)
-      }catch(e){
-        console.log(e)
-        return res.send('ERROR XD')
-      }
+router.get('/download/:id', isAuthenticated, async (req, res) => {
+
+    const {id} = req.params
+    const {title} = req.query
+
+    
+
+    
 
       try{
         await new Promise((resolve) => { // wait
             ytdl('http://www.youtube.com/watch?v=' + id, {filter: 'audioonly'})
-            .pipe(fs.createWriteStream(`${__dirname}/../musica/${videoName}.mp3`))
+            .pipe(fs.createWriteStream(`${__dirname}/../musica/${title}.mp3`))
             .on('close', () => {
               resolve();
             })
@@ -37,18 +37,40 @@ router.get('/:url', async (req, res) => {
         console.log(e)
       }
 
-      var stat = fs.statSync(`${__dirname}/../musica/${videoName}.mp3`);
-      var file = fs.readFileSync(`${__dirname}/../musica/${videoName}.mp3`, 'binary');
+      var stat = fs.statSync(`${__dirname}/../musica/${title}.mp3`);
+      var file = fs.readFileSync(`${__dirname}/../musica/${title}.mp3`, 'binary');
       res.setHeader('Content-Length', stat.size);
       res.setHeader('Content-Type', 'audio/mpeg');
-      res.setHeader('Content-Disposition', `attachment; filename=${videoName}.mp3`);
+      res.setHeader('Content-Disposition', `attachment; filename=${title}.mp3`);
       res.write(file, 'binary');
       res.end();
 
-      await delay(300000)
+      // await delay(30000)
 
-      fs.unlinkSync(`${__dirname}/../musica/${videoName}.mp3`)
+      // fs.unlinkSync(`${__dirname}/../musica/${videoName}.mp3`)
 
+})
+
+router.get('/videosearch/:name', isAuthenticated, async (req, res) => {
+  const {name} = req.params
+
+    try{
+        const videosReq = await youtubesearchapi.GetListByKeyword(`${name}`)
+        const videos = videosReq.items.map(v => {
+          return({
+            title: v.title,
+            parsedTitle: v.title.replace(/[\/\\.":*?<>{}]/g, ''),
+            channel: v.channelTitle,
+            id: v.id,
+            thumbnail: v.thumbnail.thumbnails[0].url,
+            length: v.length && v.length.simpleText
+          })
+        })
+        res.send(videos)
+      }catch(e){
+        console.log(e)
+        return res.send('ERROR XD')
+      }
 })
 
 

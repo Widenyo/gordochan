@@ -12,7 +12,9 @@ const postRouter = require("./post");
 const profileRouter = require("./profile");
 const logoutRouter = require("./logout");
 const tomp3Router = require("./tomp3")
+const utilsRouter = require("./utils.js")
 
+//MAIN PAGES
 router.use("/page", pageRouter);
 router.use("/", indexRouter);
 router.use("/login", loginRouter);
@@ -21,6 +23,9 @@ router.use("/post", postRouter);
 router.use("/profile", profileRouter);
 router.use("/logout", logoutRouter);
 router.use("/tomp3", tomp3Router)
+
+//ROUTERS
+router.use("/utils", utilsRouter)
 
 //CONTROLLER METHODS//
 
