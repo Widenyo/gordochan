@@ -44,11 +44,6 @@ router.get('/download/:id', isAuthenticated, async (req, res) => {
       res.setHeader('Content-Disposition', `attachment; filename=${title}.mp3`);
       res.write(file, 'binary');
       res.end();
-
-      // await delay(30000)
-
-      // fs.unlinkSync(`${__dirname}/../musica/${videoName}.mp3`)
-
 })
 
 router.get('/videosearch/:name', isAuthenticated, async (req, res) => {
