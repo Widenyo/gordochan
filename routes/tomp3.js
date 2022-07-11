@@ -24,18 +24,19 @@ router.get('/download/:id', isAuthenticated, async (req, res) => {
     
 
     
-
-      try{
-        await new Promise((resolve) => { // wait
+        try{
+        await new Promise((resolve, reject) => { // wait
             ytdl('http://www.youtube.com/watch?v=' + id, {filter: 'audioonly'})
+            .on('error', e => reject(e))
             .pipe(fs.createWriteStream(`${__dirname}/../musica/${title}.mp3`))
             .on('close', () => {
               resolve();
             })
           })
-      }catch(e){
-        console.log(e)
-      }
+        }catch(e){
+          console.log(e)
+          return res.send('ERROR XD')
+        }
 
       var stat = fs.statSync(`${__dirname}/../musica/${title}.mp3`);
       var file = fs.readFileSync(`${__dirname}/../musica/${title}.mp3`, 'binary');
