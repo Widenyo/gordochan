@@ -83,9 +83,9 @@
             <% if(!p.anonimo && !p.parent){ %>
             <div class="post">
                 <div class="innerPost">
-                    <a href="./post/<%=p.post_id%>">>><%=p.post_id%></a><br>
+                    <a href="/post/<%=p.post_id%>">>><%=p.post_id%></a><br>
                     <img class="avatar" src="../public/avatar/<%=p.avatar %>">
-                    <a href="./profile/<%=p.user_id%>" class="post_username"><%= p.user %></a>
+                    <a href="/profile/<%=p.user_id%>" class="post_username"><%= p.user %></a>
                     <p><%= p.date %><p>
                     <p><%= p.content %></p>
                     <% if(p.image){%>
@@ -103,7 +103,7 @@
 
                 <div class="post">
                     <div class="innerPost">
-                        <a href="./post/<%=p.post_id%>">>><%=p.post_id%></a><br>
+                        <a href="/post/<%=p.post_id%>">>><%=p.post_id%></a><br>
                         <img class="avatar" src="../public/avatar/default.jpg">
                         <p class="post_username">Anónimo</p>
                         <p><%= p.date %><p>
