@@ -8,7 +8,6 @@
     <title>gordochan.xyz</title>
 </head>
 <body>
-    <div>
     <a href="../../">Volver</a><br>
     <center><img id="banner" src="../public/banners/<%=banner%>"></center>
     <marquee><img src="../public/siteImages/GORDOCHAN TITLE.gif"></marquee>
@@ -19,6 +18,48 @@
     <br>
     <p>Firma actual: <%=user.signature%></p>
     <p>Miembro desde: <%=user.join_date%> </p>
+
+    <div>
+        <form enctype="multipart/form-data" action="./comment/<%=user.id%>" method="POST" id="postMenu">
+            <label for="comment">Comentar</label><br><textarea type="text" name="content" id="text"></textarea><br>
+            <label for="anon">Anónimo</label><input type="checkbox" name="anon" id="anontext"><br>
+            <input type="file" name="image" accept="image/png, image/jpeg, image/gif" id="imageInput">
+            <button type="submit">postear</button><br>
+        </form>
+    </div>
+    <br>
+
+    <% if(comments.length > 0){ %>
+        <% comments.forEach(p =>{ %>
+            <div class="post">
+                <div class="innerPost">
+                    <% if(!p.anon){ %>
+                    <img class="avatar" src="../public/avatar/<%=p.avatar %>">
+                    <%}else{ %>
+                    <img class="avatar" src="../public/avatar/default.jpg">
+                    <%} %>
+                    <% if(!p.anon){ %>
+                        <a href="/profile/<%=p.author_id%>" class="post_username"><%= p.user %></a>
+                    <% }else{ %>
+                        <span class="post_username">Anónimo</span>
+                    <% } %>
+                    <p><%= p.date.toLocaleDateString('es', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %><p>
+                    <p><%= p.content %></p>
+                    <% if(p.image){%>
+                        <img class="img" src="../public/commentPics/<%=p.image%>">
+                        <%} %>
+                </div>
+                <% if(p.signature && !p.anon){ %>
+                    <div class="signatureDiv">
+                        <hr class="hr">
+                        <span class="signatureDiv_signature"><%=p.signature%></span>
+                    </div>
+                <%} %>
+            </div>
+
+    <% })}else{ %>
+        <h1>NO HAY COMENTARIOS. SOYEZ LE PREMIER XD</h1>
+    <% } %>
     <% if(admin){ %>
         <br>
         <a id="banear" href="/ban/<%=user.id%>">BANEAR (PELIGROSO)</a>
@@ -32,8 +73,5 @@
     <% }else{ %>
         <h1>ESE USUARIO NO EXISTE XD</h1>
     <% } %>
-    
-    </div>
-
 </body>
 </html>

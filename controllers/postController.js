@@ -24,6 +24,31 @@ const storage = multer.diskStorage({
     }
 })
 
+
+const commentPicStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/commentPics')
+    },
+    filename: async (req, file, cb) => {
+        const filetypes = /jpeg|jpg|png|gif/;
+        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+        const mimetype = filetypes.test(file.mimetype);
+
+        let name = Date.now() + path.extname(file.originalname)
+        console.log(file)
+        
+        if(mimetype && extname) cb(null, name)
+        else return
+
+        req.body.image = name
+    }
+})
+
+
+
+
+exports.uploadCommentImg = multer({storage: commentPicStorage, limits: {fileSize: 8000000}})
+
 exports.uploadImg = multer({storage: storage, limits: {fileSize: 8000000}})
 
 
