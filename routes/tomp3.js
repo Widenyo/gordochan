@@ -6,6 +6,8 @@ const youtubesearchapi = require('youtube-search-api')
 const getRandomBanner = require('../controllers/getRandomBanner');
 const getThisUserById = require('../functions/getters/getThisUserById');
 const { isAuthenticated } = require('../controllers/authController');
+const db = require('../database/db');
+const contentDisposition = require('content-disposition')
 
 
 
@@ -13,7 +15,11 @@ router.get('/', isAuthenticated, async (req, res) => {
 
   const user = await getThisUserById(req)
 
-  return res.render('tomp3', {user: user, banner: getRandomBanner()});
+  const recentVideos = await db.query('SELECT *, recent_downloads.id AS id FROM recent_downloads JOIN users ON users.id = user_id ORDER BY recent_downloads.id DESC' ,[user.id])
+
+  console.log(recentVideos)
+
+  return res.render('tomp3', {user: user, banner: getRandomBanner(), recent: recentVideos});
 })
 
 router.get('/download/:id', isAuthenticated, async (req, res) => {
@@ -38,13 +44,20 @@ router.get('/download/:id', isAuthenticated, async (req, res) => {
           return res.send('ERROR XD')
         }
 
+      const user = await getThisUserById(req)
+
+      await db.query('INSERT INTO recent_downloads SET ?', {user_id: user.id, anon: false, filename: title})
+
       var stat = fs.statSync(`${__dirname}/../musica/${title}.mp3`);
       var file = fs.readFileSync(`${__dirname}/../musica/${title}.mp3`, 'binary');
       res.setHeader('Content-Length', stat.size);
       res.setHeader('Content-Type', 'audio/mpeg');
-      res.setHeader('Content-Disposition', `attachment; filename=${title}.mp3`);
+      res.setHeader('Content-Disposition', `attachment; filename=${contentDisposition(title)}.mp3`);
       res.write(file, 'binary');
       res.end();
+
+      
+
 })
 
 router.get('/videosearch/:name', isAuthenticated, async (req, res) => {

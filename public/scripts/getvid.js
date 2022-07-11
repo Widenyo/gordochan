@@ -9,6 +9,7 @@ buscar.addEventListener('click', async () => {
     const data = await dataReq.json()
     let videosHTML = ''
     data.forEach((v, i)  => {
+        if(typeof v.channel !== 'undefined'){
         videosHTML += `
         <div class="video" id=${i}>
         <h2>${v.title}</h2>
@@ -21,6 +22,7 @@ buscar.addEventListener('click', async () => {
         <br>
         </div>
         `
+        }
     })
     videoContainer.innerHTML = videosHTML
 })
