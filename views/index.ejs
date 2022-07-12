@@ -13,7 +13,7 @@
 
     <center><img id="banner" src="../public/banners/<%=banner%>"></center>
     <div>
-        <img src="/public/avatar/<%=user.avatar%>" id="avatar">
+        <a href="/profile/<%=user.id%>"><img src="/public/avatar/<%=user.avatar%>" id="avatar"></a>
         <a href="/logout">logout</a>
 
 
@@ -91,7 +91,7 @@
                 <div class="innerPost">
                     <a href="/post/<%=p.post_id%>">>><%=p.post_id%></a><br>
                     <% if(!p.anonimo){ %>
-                    <img class="avatar" src="/public/avatar/<%=p.avatar %>">
+                    <a href="/profile/<%=p.user_id%>"><img class="avatar" src="/public/avatar/<%=p.avatar %>"></a>
                     <% }else{ %>
                     <img class="avatar" src="/public/avatar/default.jpg">
                     <% } %>
