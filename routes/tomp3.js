@@ -9,6 +9,10 @@ const { isAuthenticated } = require('../controllers/authController');
 const db = require('../database/db');
 const contentDisposition = require('content-disposition')
 
+function validator(str) {
+  return !/[^\u0000-\u00ff]/g.test(str);
+}
+
 
 
 router.get('/', isAuthenticated, async (req, res) => {
@@ -16,8 +20,6 @@ router.get('/', isAuthenticated, async (req, res) => {
   const user = await getThisUserById(req)
 
   const recentVideos = await db.query('SELECT *, recent_downloads.id AS id FROM recent_downloads JOIN users ON users.id = user_id ORDER BY recent_downloads.id DESC' ,[user.id])
-
-  console.log(recentVideos)
 
   return res.render('tomp3', {user: user, banner: getRandomBanner(), recent: recentVideos});
 })
@@ -27,6 +29,10 @@ router.get('/download/:id', isAuthenticated, async (req, res) => {
     const {id} = req.params
     const {title} = req.query
 
+    if(!title) return res.send(title + ' lol') 
+
+    const mp3 = title.replace(/[\/\\.":*?<>{}|]/g, '') + '.mp3'
+
     
 
     
@@ -34,7 +40,7 @@ router.get('/download/:id', isAuthenticated, async (req, res) => {
         await new Promise((resolve, reject) => { // wait
             ytdl('http://www.youtube.com/watch?v=' + id, {filter: 'audioonly'})
             .on('error', e => reject(e))
-            .pipe(fs.createWriteStream(`${__dirname}/../musica/${title}.mp3`))
+            .pipe(fs.createWriteStream(`${__dirname}/../musica/${mp3}`))
             .on('close', () => {
               resolve();
             })
@@ -46,13 +52,16 @@ router.get('/download/:id', isAuthenticated, async (req, res) => {
 
       const user = await getThisUserById(req)
 
-      await db.query('INSERT INTO recent_downloads SET ?', {user_id: user.id, anon: false, filename: title})
+      await db.query('INSERT INTO recent_downloads SET ?', {user_id: user.id, anon: false, filename: mp3})
 
-      var stat = fs.statSync(`${__dirname}/../musica/${title}.mp3`);
-      var file = fs.readFileSync(`${__dirname}/../musica/${title}.mp3`, 'binary');
+
+      var stat = fs.statSync(`${__dirname}/../musica/${mp3}`);
+      var file = fs.readFileSync(`${__dirname}/../musica/${mp3}`, 'binary');
       res.setHeader('Content-Length', stat.size);
       res.setHeader('Content-Type', 'audio/mpeg');
-      res.setHeader('Content-Disposition', `attachment; filename=${contentDisposition(title)}.mp3`);
+      !validator(mp3) ?
+      res.setHeader('Content-Disposition', `attachment; filename=${contentDisposition(mp3)}`):
+      res.setHeader('Content-Disposition', `attachment; filename=${mp3}`);
       res.write(file, 'binary');
       res.end();
 
@@ -68,7 +77,6 @@ router.get('/videosearch/:name', isAuthenticated, async (req, res) => {
         const videos = videosReq.items.map(v => {
           return({
             title: v.title,
-            parsedTitle: v.title.replace(/[\/\\.":*?<>{}]/g, ''),
             channel: v.channelTitle,
             id: v.id,
             thumbnail: v.thumbnail.thumbnails[0].url,
