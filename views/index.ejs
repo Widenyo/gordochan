@@ -31,8 +31,13 @@
     </div>
 
 
+    <div class="news">
+        <h2>QUE HAY DE NUEVO EN GORDOCHAN XD</h2>
+        <ul>
+            <li><a href="/tomp3">GORDOCHAN AHORA EN MP3</a></li>
+        </ul>
+    </div>
 
-    <a href="/tomp3">GORDOCHAN AHORA EN MP3</a>
     <div class="fixed">
 
         <div class="fixed_visible" id="fixedVisible">
@@ -114,28 +119,30 @@
                 <%} %>
             </div>
             <% }}) %>
-    <div class="iterator">
-        <% if(page !== 1 && page > 6){ %>
-            <a href="/page/1"><<</a>
-        <% } %>
-        <% for(let i = page-5; i <= page+5; i++){ %>
-            <% if (i <= 0){ %>
-                <% i = 1 %>
-           <% } %>
-            <% if(i > lastPage && i !== 1){ %>
-                <% break %>
-           <% } %>
-            <% if(i === page){ %>
-                <span><%= i %></span>
-            <% }else{ %>
-                <a href="/page/<%=i%>"><%=i%></a>
-            <% } %> 
-    
-        <%} %>
-        <% if(page !== lastPage && page < lastPage-5){ %>
-            <a href="/page/<%=lastPage%>">>></a>
-        <% } %>
-        </div>
+        <center>
+            <div class="iterator">
+            <% if(page !== 1 && page > 6){ %>
+                <a href="/page/1"><<</a>
+            <% } %>
+            <% for(let i = page-5; i <= page+5; i++){ %>
+                <% if (i <= 0){ %>
+                    <% i = 1 %>
+            <% } %>
+                <% if(i > lastPage && i !== 1){ %>
+                    <% break %>
+            <% } %>
+                <% if(i === page){ %>
+                    <span><%= i %></span>
+                <% }else{ %>
+                    <a href="/page/<%=i%>"><%=i%></a>
+                <% } %> 
+        
+            <%} %>
+            <% if(page !== lastPage && page < lastPage-5){ %>
+                <a href="/page/<%=lastPage%>">>></a>
+            <% } %>
+            </div>
+        </center>
 <% }else{ %>
         <h1>NO HAY POSTS TODAVÍA. SOYEZ LE PREMIER</h1>
    <% } %>
