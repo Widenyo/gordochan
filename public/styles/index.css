@@ -164,3 +164,7 @@ body{
     display: inline-table;
 }
 
+.badges > *{
+    width: 25px;
+    height: 25px;
+}

@@ -51,7 +51,7 @@ async function sauceNAO(id){
 
         HTML += `</div>`
 
-        div.innerHTML += HTML
+        div.innerHTML = HTML
 
     }
 

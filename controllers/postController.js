@@ -4,6 +4,8 @@ const {promisify} = require('util')
 const path = require('path')
 
 
+
+
 const multer = require('multer')
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -57,9 +59,8 @@ exports.uploadImg = multer({storage: storage, limits: {fileSize: 8000000}})
 
 exports.createPost = async (req, res, next) => {
 
-    let {content, anon, image} = req.body
+    let {content, anon, image, reddit} = req.body
     let parentId = req.params.parentId
-
     if(anon === 'on') anon = 1
     else anon = 0
 
@@ -68,7 +69,7 @@ exports.createPost = async (req, res, next) => {
 
     try{
     const decode = await promisify(jwt.verify)(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
-    db.query('INSERT INTO post SET ?', {user_id: decode.id, content:content, anonimo: anon, parent: parentId}, (e, r) =>{
+    db.query('INSERT INTO post SET ?', {user_id: decode.id, content:content, anonimo: anon, parent: parentId, phone: reddit === 'true' ? 1 : 0}, (e, r) =>{
         if(e){
             return res.redirect('/')
         }

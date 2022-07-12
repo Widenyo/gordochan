@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../public/styles/index.css">
-    <link rel="icon" href="../public/iconos/hueylewis.jpg" type="image/jpg">
+    <link rel="icon" href="/public/iconos/hueylewis.jpg" type="image/jpg">
     <title>gordochan.xyz</title>
 </head>
 <body>
@@ -13,7 +13,7 @@
 
     <center><img id="banner" src="../public/banners/<%=banner%>"></center>
     <div>
-        <img src="../public/avatar/<%=user.avatar%>" id="avatar">
+        <img src="/public/avatar/<%=user.avatar%>" id="avatar">
         <a href="/logout">logout</a>
 
 
@@ -66,13 +66,14 @@
             <label for="post">¿En qué está pensando <%= user.user %>?</label><br><textarea type="text" name="content" id="text"></textarea><br>
             <label for="anonimo">Anónimo</label><input type="checkbox" name="anon" id="anontext"><br>
             <input type="file" name="image" accept="image/png, image/jpeg, image/gif" id="imageInput"><br>
+            <input id="reddit" type="hidden" name="reddit" value="false" %>>
             <button type="submit">postear</button>
         </form>
     </div>
 
 
 
-    <marquee><img src="../public/siteImages/GORDOCHAN TITLE.gif"></marquee>
+    <marquee><img src="/public/siteImages/GORDOCHAN TITLE.gif"></marquee>
 
 
     <h2 id="insulto"><%= user.user %> ES GAY Y ESTÁ CONECTADO DESDE UN TELEFONO (DISPOSITIVO DE RASTREO VOLUNTARIO)</h2>
@@ -80,42 +81,39 @@
     <div>
     <% if(posts){ %>
         <% posts.forEach((p) =>{ %>
-            <% if(!p.anonimo && !p.parent){ %>
+            <% if(!p.parent){ %>
             <div class="post">
                 <div class="innerPost">
                     <a href="/post/<%=p.post_id%>">>><%=p.post_id%></a><br>
-                    <img class="avatar" src="../public/avatar/<%=p.avatar %>">
+                    <% if(!p.anonimo){ %>
+                    <img class="avatar" src="/public/avatar/<%=p.avatar %>">
+                    <% }else{ %>
+                    <img class="avatar" src="/public/avatar/default.jpg">
+                    <% } %>
+                    <% if(!p.anonimo){ %>
                     <a href="/profile/<%=p.user_id%>" class="post_username"><%= p.user %></a>
+                    <% }else{ %>
+                    <span class="post_username">Anonimo</span>
+                   <% } %>
                     <p><%= p.date %><p>
                     <p><%= p.content %></p>
                     <% if(p.image){%>
-                        <img class="img" src="../public/images/<%=p.image%>">
-                        <%} %>
+                        <img class="img" src="/public/images/<%=p.image%>">
+                    <% } %>
+                    <div class="badges">
+                        <% if(p.phone){ %>
+                        <img class="badge" src="/public/badges/reddit.png" title="Posteado desde r/gordochan.xyz">
+                       <% } %>
+                    </div>
                 </div>
-                <% if(p.signature){ %>
+                <% if(p.signature && !p.anonimo){ %>
                     <div class="signatureDiv">
                         <hr class="hr">
                         <span class="signatureDiv_signature"><%=p.signature%></span>
                     </div>
                 <%} %>
             </div>
-            <% }if(p.anonimo && !p.parent){ %>
-
-                <div class="post">
-                    <div class="innerPost">
-                        <a href="/post/<%=p.post_id%>">>><%=p.post_id%></a><br>
-                        <img class="avatar" src="../public/avatar/default.jpg">
-                        <p class="post_username">Anónimo</p>
-                        <p><%= p.date %><p>
-                        <p><%= p.content %></p>
-                        <% if(p.image){%>
-                            <img class="img" src="../public/images/<%=p.image%>">
-                            <%} %>
-                    </div>
-                </div>
-            </div>
-
-    <% }}) %>
+            <% }}) %>
     <div class="iterator">
         <% if(page !== 1 && page > 6){ %>
             <a href="/page/1"><<</a>
@@ -144,8 +142,9 @@
    <iframe src="https://www.retrogames.cc/embed/8962-kung-fu-master.html" width="600" height="450" frameborder="no" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" scrolling="no"></iframe>
 
 
-<script src="../public/scripts/index.js"></script>
-<script src="../public/scripts/randombanner.js"></script>
+<script src="/public/scripts/index.js"></script>
+<script src="/public/scripts/randombanner.js"></script>
+<script src="/public/scripts/reddit.js"></script>
 </body>
 
 </html>
