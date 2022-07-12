@@ -36,8 +36,8 @@ async function sauceNAO(id){
     const dataReq = await fetch(`/utils/saucenao/search/?url=${url}`)
     const data = await dataReq.json()
     console.log(data)
+    let HTML = ""
     for(let i = 0; i < data.length; i++){
-        let HTML = ""
         HTML += `
         <div class="sauce">
         ${data[i].material}: ${data[i].characters}.<br>
@@ -50,9 +50,8 @@ async function sauceNAO(id){
         })
 
         HTML += `</div>`
-
-        div.innerHTML = HTML
-
     }
+
+    div.innerHTML = HTML
 
 }
