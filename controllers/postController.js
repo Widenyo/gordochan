@@ -49,9 +49,9 @@ const commentPicStorage = multer.diskStorage({
 
 
 
-exports.uploadCommentImg = multer({storage: commentPicStorage, limits: {fileSize: 8000000}})
+exports.uploadCommentImg = multer({storage: commentPicStorage, limits: {fileSize: 16000000}})
 
-exports.uploadImg = multer({storage: storage, limits: {fileSize: 8000000}})
+exports.uploadImg = multer({storage: storage, limits: {fileSize: 16000000}})
 
 
 
