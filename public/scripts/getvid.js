@@ -17,7 +17,7 @@ buscar.addEventListener('click', async () => {
         <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank">Youtube</a>
         Duracion: ${v.length}<br>
         <a id="${i}__click" url="${v.thumbnail}" onclick=sauceNAO(${i}) href="javascript:void(0);"><img src="${v.thumbnail}" class='vidimg'><br></a>
-        <a href='/tomp3/download/${v.id}?title=${v.title}'>Descargar</a>
+        <a href='/tomp3/download/${v.id}?title=${v.title.replace(/[\/\\.":*?<>{}|#]/g, '')}'>Descargar</a>
         <div id="${i}__saucenao"></div>
         <br>
         </div>

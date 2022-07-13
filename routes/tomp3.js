@@ -29,6 +29,8 @@ router.get('/download/:id', isAuthenticated, async (req, res) => {
     const {id} = req.params
     const {title} = req.query
 
+    console.log(title)
+
     if(!title) return res.send(title + ' lol') 
 
     const mp3 = title.replace(/[\/\\.":*?<>{}|]/g, '') + '.mp3'
@@ -61,7 +63,7 @@ router.get('/download/:id', isAuthenticated, async (req, res) => {
       res.setHeader('Content-Type', 'audio/mpeg');
       !validator(mp3) ?
       res.setHeader('Content-Disposition', `attachment; filename=${contentDisposition(mp3)}`):
-      res.setHeader('Content-Disposition', `attachment; filename=${mp3}`);
+      res.setHeader('Content-Disposition', `attachment; filename=\"${mp3}\"`);
       res.write(file, 'binary');
       res.end();
 
