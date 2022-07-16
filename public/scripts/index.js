@@ -87,6 +87,5 @@ showChatButton.addEventListener('click', () => {
 
 hideChatButton.addEventListener('click', () => {
     chatContainer.style.display = 'none'
-    hideChatButton.style.display = 'none'
     showChatButton.style.display = 'block'
 })
