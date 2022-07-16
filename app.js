@@ -2,13 +2,14 @@ require("dotenv").config();
 const express = require("express");
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
-const fs = require('fs')
+const fs = require('fs');
+const getThisUserById = require("./functions/getters/getThisUserById");
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 
-
-const app = express();
-
+const app = require('express')();
+const http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 
 //motor de plantillas
@@ -27,7 +28,7 @@ app.use(cookieParser())
 app.use('/', require('./routes/router'))
 
 
-app.listen(process.env.PORT,  () => {
+http.listen(process.env.PORT,  () => {
   async function destruccion(){
     const files = fs.readdirSync(`${__dirname}/musica`)
     for (const file of files) {
@@ -43,4 +44,14 @@ app.listen(process.env.PORT,  () => {
   }
   destruccion()
   console.log(`Listening on port ${process.env.PORT}`);
+});
+
+
+io.on('connection', (socket) => {
+
+  // getThisUserById(req)
+
+  socket.on('chat message', (msg) => {
+    console.log('message: ' + msg);
+  });
 });

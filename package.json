@@ -30,6 +30,7 @@
     "pm2": "^5.2.0",
     "proxy-addr": "^2.0.7",
     "serverless-mysql": "^1.5.4",
+    "socket.io": "^4.5.1",
     "youtube-search-api": "^1.1.0",
     "ytdl": "^1.4.1",
     "ytdl-core": "^4.11.0"

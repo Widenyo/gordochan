@@ -172,3 +172,21 @@ body{
 .iterator > *{
     font-size: 26px;
 }
+
+.chatContainer{
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    width: 300px;
+    height: 500px;
+    background-color: white;
+    display: flex;
+}
+
+#sendMessage{
+    align-self: flex-end;
+}
+
+#inputMsg{
+    width: 100%;
+}
