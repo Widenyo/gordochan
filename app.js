@@ -55,9 +55,9 @@ io.on('connection', async (socket) => {
 
   const user = await getThisUserById(cookies)
 
-  socket.emit('send-message', `Asoplata: hola ${user.user}`);
+  io.emit('send-message', `Asoplata: hola ${user.user}`);
 
   socket.on('chat message', (msg) => {
-    socket.emit('send-message', `${user.user}: ${msg}`);
+    io.emit('send-message', `${user.user}: ${msg}`);
   });
 });
