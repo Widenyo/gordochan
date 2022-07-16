@@ -5,6 +5,7 @@ const cors = require('cors')
 const fs = require('fs');
 const getThisUserById = require("./functions/getters/getThisUserById");
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+const {parse} = require('cookie')
 
 
 const app = require('express')();
@@ -47,11 +48,16 @@ http.listen(process.env.PORT,  () => {
 });
 
 
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
 
-  // getThisUserById(req)
+  const cookie = parse((socket.handshake.headers.cookie))
+  const cookies = {cookies: {jwt: cookie.jwt}}
+
+  const user = await getThisUserById(cookies)
+
+  socket.emit('send-message', `Asoplata: hola ${user.user}`);
 
   socket.on('chat message', (msg) => {
-    console.log('message: ' + msg);
+    socket.emit('send-message', `${user.user}: ${msg}`);
   });
 });

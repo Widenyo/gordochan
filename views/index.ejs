@@ -149,7 +149,11 @@
    <iframe src="https://www.retrogames.cc/embed/8962-kung-fu-master.html" width="600" height="450" frameborder="no" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" scrolling="no"></iframe>
 
 
-    <div class="chatContainer">
+
+   <a id="showChatButton" href="javascript:;"><img src="/public/iconos/msn.png" id="msn"></a>
+    <div id="chatContainer">
+        <a href="javascript:;" id="hideChatButton">_</a>
+        <ul id="messages"></ul>
         <form id="sendMessage">
             <input id="inputMsg" autocomplete="off" />
         </form>
@@ -167,6 +171,7 @@
 
    const formMsg = document.getElementById('sendMessage');
    const inputMsg = document.getElementById('inputMsg');
+   const messages = document.getElementById('messages')
 
    formMsg.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -175,6 +180,12 @@
       inputMsg.value = '';
     }
   });
+
+  socket.on('send-message', (msg) => {
+    const item = document.createElement('li');
+    item.textContent = msg;
+    messages.appendChild(item);
+  })
 
 </script>
 

@@ -10,6 +10,10 @@ const cambiarVista = document.getElementById('vista')
 const fixedVisible = document.getElementById('fixedVisible')
 const showMenu = document.getElementById('showMenu')
 
+const hideChatButton = document.getElementById('hideChatButton')
+const showChatButton = document.getElementById('showChatButton')
+const chatContainer = document.getElementById('chatContainer')
+
 const fixedMenu = document.getElementById('fixedMenu')
 
 const fixedHidden = document.getElementById('fixedHidden')
@@ -76,3 +80,12 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
     insulto.style.display = 'block'
 }
 
+showChatButton.addEventListener('click', () => {
+    chatContainer.style.display = 'flex'
+    showChatButton.style.display = 'none'
+})
+
+hideChatButton.addEventListener('click', () => {
+    chatContainer.style.display = 'none'
+    hideChatButton.style.display = 'none'
+})
