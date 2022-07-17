@@ -58,8 +58,8 @@ io.on('connection', async (socket) => {
   try{
   user = await getThisUserById(cookies)
   }catch(e){
-    socket.disconnect()
     console.log(e)
+    return socket.disconnect()
   }
 
   io.emit('send-message', `Asoplata: hola ${user.user}`);
