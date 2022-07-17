@@ -103,6 +103,7 @@
                     <p><%= p.date %><p>
                     <p><%= p.content %></p>
                     <% if(p.image && p.image === 'null'){%>
+                        <% console.log(p.image) %>
                         <img class="img" src="/public/images/<%=p.image%>">
                     <% } %>
                     <div class="badges">
