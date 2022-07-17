@@ -52,7 +52,7 @@ io.on('connection', async (socket) => {
 
   console.log(socket.handshake.headers.cookie)
 
-  if(!socket.handshake.headers.cookie) return socket.disconnect()
+  if(typeof socket.handshake.headers.cookie !== 'string') return socket.disconnect()
 
   const cookie = parse((socket.handshake.headers.cookie))
   if(!cookie.jwt) return socket.disconnect()
