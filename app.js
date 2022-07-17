@@ -50,6 +50,8 @@ http.listen(process.env.PORT,  () => {
 
 io.on('connection', async (socket) => {
 
+  console.log(socket.handshake.headers.cookie)
+
   if(!socket.handshake.headers.cookie) socket.disconnect()
 
   const cookie = parse((socket.handshake.headers.cookie))
