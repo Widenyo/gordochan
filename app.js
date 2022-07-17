@@ -50,10 +50,19 @@ http.listen(process.env.PORT,  () => {
 
 io.on('connection', async (socket) => {
 
+  if(!socket.handshake.headers.cookie) socket.disconnect()
+
   const cookie = parse((socket.handshake.headers.cookie))
+  if(!cookie.jwt) socket.disconnect()
   const cookies = {cookies: {jwt: cookie.jwt}}
 
-  const user = await getThisUserById(cookies)
+  let user = {}
+  try{
+  user = await getThisUserById(cookies)
+  }catch(e){
+    socket.disconnect()
+    console.log(e)
+  }
 
   io.emit('send-message', `Asoplata: hola ${user.user}`);
 
