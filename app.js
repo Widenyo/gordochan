@@ -52,10 +52,10 @@ io.on('connection', async (socket) => {
 
   console.log(socket.handshake.headers.cookie)
 
-  if(!socket.handshake.headers.cookie) socket.disconnect()
+  if(!socket.handshake.headers.cookie) return socket.disconnect()
 
   const cookie = parse((socket.handshake.headers.cookie))
-  if(!cookie.jwt) socket.disconnect()
+  if(!cookie.jwt) return socket.disconnect()
   const cookies = {cookies: {jwt: cookie.jwt}}
 
   let user = {}
