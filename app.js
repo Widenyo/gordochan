@@ -50,11 +50,7 @@ http.listen(process.env.PORT,  () => {
 
 io.on('connection', async (socket) => {
 
-  console.log(socket.handshake.headers.cookie)
-
-  if(typeof socket.handshake.headers.cookie !== 'string') return socket.disconnect()
-
-  const cookie = parse((socket.handshake.headers.cookie))
+  const cookie = parse((socket.handshake.headers.cookie || ""))
   if(!cookie.jwt) return socket.disconnect()
   const cookies = {cookies: {jwt: cookie.jwt}}
 
