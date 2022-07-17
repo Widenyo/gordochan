@@ -102,7 +102,7 @@
                    <% } %>
                     <p><%= p.date %><p>
                     <p><%= p.content %></p>
-                    <% if(p.image){%>
+                    <% if(p.image && p.image === 'null'){%>
                         <img class="img" src="/public/images/<%=p.image%>">
                     <% } %>
                     <div class="badges">

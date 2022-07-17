@@ -63,7 +63,7 @@ exports.createPost = async (req, res, next) => {
     let parentId = req.params.parentId
     if(anon === 'on') anon = 1
     else anon = 0
-    
+
     if(content === "" && !image) return res.redirect('/')
 
 
