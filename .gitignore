@@ -1,6 +1,6 @@
 node_modules
 .env
-**/public/avatar
+/public/avatar/*
 !/public/avatar/default.jpg
 /public/images/*
 /public/commentPics/*
