@@ -1,0 +1,17 @@
+<div>
+    <a href="/profile/<%=user.id%>"><img src="/public/avatar/<%=user.avatar%>" id="avatar"></a>
+    <a href="/logout">logout</a>
+
+
+    <form action="/changePfp" enctype="multipart/form-data" method="POST">
+    <label for="avatar">Cambiar foto de perfil</label>
+    <input type="file" name="avatar" accept="image/png, image/jpeg, image/gif">
+    <button type="submit">Enviar</button>
+    </form>
+
+    <form action="/updateInfo" method="POST">
+        <label for="signature">Modificar firma</label>
+        <input type="text" name="signature">
+        <button type="submit">Enviar</button>
+    </form>
+</div>

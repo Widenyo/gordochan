@@ -1,0 +1,41 @@
+<div>
+    <% if(posts){ %>
+        <% posts.forEach((p) =>{ %>
+            <% if(!p.parent){ %>
+            <div class="post">
+                <div class="innerPost">
+                    <a href="/post/<%=p.post_id%>">>><%=p.post_id%></a><br>
+                    <% if(!p.anonimo){ %>
+                    <a href="/profile/<%=p.user_id%>"><img class="avatar" src="/public/avatar/<%=p.avatar %>"></a>
+                    <% }else{ %>
+                    <img class="avatar" src="/public/avatar/default.jpg">
+                    <% } %>
+                    <% if(!p.anonimo){ %>
+                    <a href="/profile/<%=p.user_id%>" class="post_username"><%= p.user %></a>
+                    <% }else{ %>
+                    <span class="post_username">Anonimo</span>
+                   <% } %>
+                    <p><%= p.date %><p>
+                    <p><%= p.content %></p>
+                    <% if(p.image && p.image !== 'null'){%>
+                        <img class="img" src="/public/images/<%=p.image%>">
+                    <% } %>
+                    <div class="badges">
+                        <% if(p.phone){ %>
+                        <img class="badge" src="/public/badges/reddit.png" title="Posteado desde r/gordochan.xyz">
+                       <% } %>
+                    </div>
+                </div>
+                <% if(p.signature && !p.anonimo){ %>
+                    <div class="signatureDiv">
+                        <hr class="hr">
+                        <span class="signatureDiv_signature"><%=p.signature%></span>
+                    </div>
+                <%} %>
+            </div>
+            <% }}) %>
+            <%- include("iterator") %>
+<% }else{ %>
+        <h1>NO HAY POSTS TODAVÍA. SOYEZ LE PREMIER</h1>
+   <% } %>
+    </div>

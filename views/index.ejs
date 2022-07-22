@@ -1,196 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../public/styles/index.css">
-    <link rel="icon" href="/public/iconos/hueylewis.jpg" type="image/jpg">
-    <title>gordochan.xyz</title>
-</head>
-<body>
+  <%- include("components/head") %>
+  <body>
     <h1>Bienvenido de vuelta, <%= user.user %></h1>
 
-    <center><img id="banner" src="../public/banners/<%=banner%>"></center>
-    <div>
-        <a href="/profile/<%=user.id%>"><img src="/public/avatar/<%=user.avatar%>" id="avatar"></a>
-        <a href="/logout">logout</a>
-
-
-        <form action="/changePfp" enctype="multipart/form-data" method="POST">
-        <label for="avatar">Cambiar foto de perfil</label>
-        <input type="file" name="avatar" accept="image/png, image/jpeg, image/gif">
-        <button type="submit">Enviar</button>
-        </form>
-
-        <form action="/updateInfo" method="POST">
-            <label for="signature">Modificar firma</label>
-            <input type="text" name="signature">
-            <button type="submit">Enviar</button>
-        </form>
-    </div>
-
-
+    <center><img id="banner" src="/public/banners/<%=banner%>" /></center>
+    <%- include("components/editprofile.ejs") %>
     <div class="news">
-        <h2>QUE HAY DE NUEVO EN GORDOCHAN XD</h2>
-        <ul>
-            <li><a href="/tomp3">GORDOCHAN AHORA EN MP3</a></li>
-        </ul>
+      <h2>QUE HAY DE NUEVO EN GORDOCHAN XD</h2>
+      <ul>
+        <li><a href="/tomp3">GORDOCHAN AHORA EN MP3</a></li>
+      </ul>
     </div>
+    <%- include("components/fixedmenu.ejs") %> 
+    <%- include("components/postform.ejs") %>
 
-    <div class="fixed">
+    <marquee><img src="/public/siteImages/GORDOCHAN TITLE.gif" /></marquee>
 
-        <div class="fixed_visible" id="fixedVisible">
-            <a href="javascript:;" id="showMenu">▼</a>
-        </div>
+    <h2 id="insulto">
+      <%= user.user %> ES GAY Y ESTÁ CONECTADO DESDE UN TELEFONO (DISPOSITIVO DE
+      RASTREO VOLUNTARIO)
+    </h2>
 
-        <div class="fixed_menu" id="fixedMenu">
-            <a href="javascript:;" id="postButton">✎</a>
-            <a href="javascript:;" id="settingsButton">⚙</a>
-            <a href="javascript:;" id="hideMenu">▲</a>
-        </div>
+    <%-include("components/posts")%>
 
-        <div class="fixed_hidden" id="fixedHidden">
-            <div class="settings" id="settings">
-                <button id="cambiarFuente">CAMBIAR FUENTE</button>
-                <button id="vista">CAMBIAR VISTA</button>
-            </div>
+    <iframe
+      src="https://www.retrogames.cc/embed/8962-kung-fu-master.html"
+      width="600"
+      height="450"
+      frameborder="no"
+      allowfullscreen="true"
+      webkitallowfullscreen="true"
+      mozallowfullscreen="true"
+      scrolling="no"
+    ></iframe>
 
-            <form action="/post" enctype="multipart/form-data" method="POST" class='postear' id="postMenu">
-                <label for="post">¿En qué está pensando <%= user.user %>?</label><textarea type="text" name="content" id="text"></textarea>
-                <label for="anonimo">Anónimo</label><input type="checkbox" name="anon" id="anontext">
-                <input type="file" name="image" accept="image/png, image/jpeg, image/gif" id="imageInput">
-                <button type="submit">postear</button>
-            </form>
+    <%- include("components/chat.ejs") %>
 
-        </div>
-    </div>
-
-    <div>
-        <form action="/post" enctype="multipart/form-data" method="POST" id="postMenu"><br>
-            <label for="post">¿En qué está pensando <%= user.user %>?</label><br><textarea type="text" name="content" id="text"></textarea><br>
-            <label for="anonimo">Anónimo</label><input type="checkbox" name="anon" id="anontext"><br>
-            <input type="file" name="image" accept="image/png, image/jpeg, image/gif" id="imageInput"><br>
-            <input id="reddit" type="hidden" name="reddit" value="false" %>>
-            <button type="submit">postear</button>
-        </form>
-    </div>
-
-
-
-    <marquee><img src="/public/siteImages/GORDOCHAN TITLE.gif"></marquee>
-
-
-    <h2 id="insulto"><%= user.user %> ES GAY Y ESTÁ CONECTADO DESDE UN TELEFONO (DISPOSITIVO DE RASTREO VOLUNTARIO)</h2>
-
-    <div>
-    <% if(posts){ %>
-        <% posts.forEach((p) =>{ %>
-            <% if(!p.parent){ %>
-            <div class="post">
-                <div class="innerPost">
-                    <a href="/post/<%=p.post_id%>">>><%=p.post_id%></a><br>
-                    <% if(!p.anonimo){ %>
-                    <a href="/profile/<%=p.user_id%>"><img class="avatar" src="/public/avatar/<%=p.avatar %>"></a>
-                    <% }else{ %>
-                    <img class="avatar" src="/public/avatar/default.jpg">
-                    <% } %>
-                    <% if(!p.anonimo){ %>
-                    <a href="/profile/<%=p.user_id%>" class="post_username"><%= p.user %></a>
-                    <% }else{ %>
-                    <span class="post_username">Anonimo</span>
-                   <% } %>
-                    <p><%= p.date %><p>
-                    <p><%= p.content %></p>
-                    <% if(p.image && p.image !== 'null'){%>
-                        <img class="img" src="/public/images/<%=p.image%>">
-                    <% } %>
-                    <div class="badges">
-                        <% if(p.phone){ %>
-                        <img class="badge" src="/public/badges/reddit.png" title="Posteado desde r/gordochan.xyz">
-                       <% } %>
-                    </div>
-                </div>
-                <% if(p.signature && !p.anonimo){ %>
-                    <div class="signatureDiv">
-                        <hr class="hr">
-                        <span class="signatureDiv_signature"><%=p.signature%></span>
-                    </div>
-                <%} %>
-            </div>
-            <% }}) %>
-        <center>
-            <div class="iterator">
-            <% if(page !== 1 && page > 6){ %>
-                <a href="/page/1"><<</a>
-            <% } %>
-            <% for(let i = page-5; i <= page+5; i++){ %>
-                <% if (i <= 0){ %>
-                    <% i = 1 %>
-            <% } %>
-                <% if(i > lastPage && i !== 1){ %>
-                    <% break %>
-            <% } %>
-                <% if(i === page){ %>
-                    <span><%= i %></span>
-                <% }else{ %>
-                    <a href="/page/<%=i%>"><%=i%></a>
-                <% } %> 
-        
-            <%} %>
-            <% if(page !== lastPage && page < lastPage-5){ %>
-                <a href="/page/<%=lastPage%>">>></a>
-            <% } %>
-            </div>
-        </center>
-<% }else{ %>
-        <h1>NO HAY POSTS TODAVÍA. SOYEZ LE PREMIER</h1>
-   <% } %>
-   <iframe src="https://www.retrogames.cc/embed/8962-kung-fu-master.html" width="600" height="450" frameborder="no" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" scrolling="no"></iframe>
-
-
-
-   <a id="showChatButton" href="javascript:;"><img src="/public/iconos/msn.png" id="msn"></a>
-    <div id="chatContainer">
-        <a href="javascript:;" id="hideChatButton">_</a>
-        <ul id="messages"></ul>
-        <form id="sendMessage">
-            <input id="inputMsg" autocomplete="off" />
-        </form>
-    </div>
-
-
-<script src="/public/scripts/index.js"></script>
-<script src="/public/scripts/randombanner.js"></script>
-<script src="/public/scripts/reddit.js"></script>
-
-<script src = "/socket.io/socket.io.js"></script>
-   
-<script>
-   const socket = io();
-
-   const formMsg = document.getElementById('sendMessage');
-   const inputMsg = document.getElementById('inputMsg');
-   const messages = document.getElementById('messages')
-
-   formMsg.addEventListener('submit', function(e) {
-    e.preventDefault();
-    if (inputMsg.value) {
-      socket.emit('chat message', inputMsg.value);
-      inputMsg.value = '';
-    }
-  });
-
-  socket.on('send-message', (msg) => {
-    const item = document.createElement('li');
-    item.textContent = msg;
-    messages.appendChild(item);
-  })
-
-</script>
-
-</body>
-
-
-
+    <script src="/public/scripts/index.js"></script>
+    <script src="/public/scripts/reddit.js"></script>
+  </body>
 </html>
