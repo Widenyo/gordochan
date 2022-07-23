@@ -5,7 +5,6 @@ const getPosts = require('../functions/getters/getPosts')
 const getLastPage = require('../functions/getters/getLastPage')
 const getThisUserById = require('../functions/getters/getThisUserById');
 const { boardExists } = require('../controllers/boardController');
-const getBoardId = require('../functions/getters/getBoardId');
 const getBoard = require('../functions/getters/getBoard');
 const router = Router()
 
@@ -22,9 +21,8 @@ router.get("/:board", auth.isAuthenticated, boardExists, async (req, res) => {
         const short = req.params.board
 
         const user = await getThisUserById(req)
-
-        const posts = await getPosts(res, 1, short, user)
         const board = await getBoard(short)
+        const posts = await getPosts(res, 1, short, user, board.name)
         const lastPage = await getLastPage(board.id)
 
         return res.render('board', {user: user, posts: posts, banner: getRandomBanner(), page: 1, lastPage: lastPage, boardId: board.id, short: short, boardName: board.name});
@@ -47,7 +45,7 @@ router.get("/:board/page/:page", auth.isAuthenticated, boardExists, async (req, 
 
     try{
         const user = await getThisUserById(req)
-        const posts = await getPosts(res, page, short, user)
+        const posts = await getPosts(res, page, short, user, board.name)
         const lastPage = await getLastPage(board.id)
         return res.render('board', {user: user, posts: posts, banner: getRandomBanner(), page: page, lastPage: lastPage, boardId: board.id, short: short, boardName: board.name});
     }catch(e){
