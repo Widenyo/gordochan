@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("components/head", {style: 'board', icon: 'hueylewis', title: 'gordochan.xyz'}) %>
+  <body>
+    <h1>Bienvenido de vuelta, <%= user.user %></h1>
+
+    <center><img id="banner" src="/public/banners/<%=banner%>" /><br>
+      <h1>/<%=short%>/ - <%=boardName%></h1>
+    </center>
+    <a href="/">INDEX DE GORCHAN.XYZ</a><br>
+    <%- include("components/editprofile.ejs") %>
+    <%- include("components/fixedmenu.ejs") %> 
+    <%- include("components/postform.ejs") %>
+
+    <marquee><img src="/public/siteImages/GORDOCHAN TITLE.gif" /></marquee>
+
+    <h2 id="insulto">
+      <%= user.user %> ES GAY Y ESTÁ CONECTADO DESDE UN TELEFONO (DISPOSITIVO DE
+      RASTREO VOLUNTARIO)
+    </h2>
+
+    <%-include("components/posts")%>
+
+    <iframe
+      src="https://www.retrogames.cc/embed/8962-kung-fu-master.html"
+      width="600"
+      height="450"
+      frameborder="no"
+      allowfullscreen="true"
+      webkitallowfullscreen="true"
+      mozallowfullscreen="true"
+      scrolling="no"
+    ></iframe>
+
+    <%- include("components/chat.ejs") %>
+
+    <script src="/public/scripts/index.js"></script>
+    <script src="/public/scripts/reddit.js"></script>
+  </body>
+</html>

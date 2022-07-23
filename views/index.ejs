@@ -1,43 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include("components/head") %>
-  <body>
-    <h1>Bienvenido de vuelta, <%= user.user %></h1>
+  <%- include("components/head", {style: 'index', icon: 'hueylewis', title: 'GORDOINDEX'}); %>
+    <body>
+  
+      <marquee><img src="/public/siteImages/GORDOCHAN TITLE.gif" /></marquee>
 
-    <center><img id="banner" src="/public/banners/<%=banner%>" /></center>
-    <%- include("components/editprofile.ejs") %>
-    <div class="news">
-      <h2>QUE HAY DE NUEVO EN GORDOCHAN XD</h2>
-      <ul>
-        <li><a href="/tomp3">GORDOCHAN AHORA EN MP3</a></li>
-      </ul>
-    </div>
-    <%- include("components/fixedmenu.ejs") %> 
-    <%- include("components/postform.ejs") %>
+        <div class="container">
+          <h1>HOLA <%= user.user %></h1>
+          <p>BIENVENIDO A GORDOCHAN XD. GORDOCHAN ES UN TABLON DE IMAGENES EXPERIMENTAL QUE HICE YO (GOR) PARA PRACTICAR MI CODEMANCIA. PAGUÉ 2 LUCAS UN VPS PARA VER BIEN LO QUE ERA EL DEPLOY DE UNA PAGINA PERO AL FINAL ME COPÓ TENER UN VPS EN GENERAL ASI QUE GORDOCHAN LO VOY A HOSTEAR HASTA QUE ME QUEDE SIN UN PESO O ME OLVIDE.</p>
+          <div class="news">
+            <h2>QUE HAY DE NUEVO EN GORDOCHAN XD</h2>
+            <ul>
+              <li>HICE UN INDEX XD POR AHORA NO HAGO EL DISEÑO ASI QUE SE VA A QUEDAR ASI TODO BOLIVIANO</li>
+              <li><a href="/tomp3">GORDOCHAN AHORA EN MP3</a></li>
+            </ul>
+          </div>
+        </div>
 
-    <marquee><img src="/public/siteImages/GORDOCHAN TITLE.gif" /></marquee>
-
-    <h2 id="insulto">
-      <%= user.user %> ES GAY Y ESTÁ CONECTADO DESDE UN TELEFONO (DISPOSITIVO DE
-      RASTREO VOLUNTARIO)
-    </h2>
-
-    <%-include("components/posts")%>
-
-    <iframe
-      src="https://www.retrogames.cc/embed/8962-kung-fu-master.html"
-      width="600"
-      height="450"
-      frameborder="no"
-      allowfullscreen="true"
-      webkitallowfullscreen="true"
-      mozallowfullscreen="true"
-      scrolling="no"
-    ></iframe>
-
-    <%- include("components/chat.ejs") %>
-
-    <script src="/public/scripts/index.js"></script>
-    <script src="/public/scripts/reddit.js"></script>
-  </body>
+        <div class="container">
+            <h2>TABLONES</h2>
+            <ul>
+              <li><a href="/boards/b/">random</a></li>
+              <li><a href="/boards/a/">asoplata</a></li>
+            </ul>
+        </div>
+  
+      <%- include("components/chat.ejs") %>
+</body>
 </html>

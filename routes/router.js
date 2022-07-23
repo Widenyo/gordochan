@@ -5,7 +5,6 @@ const { ban } = require("../controllers/adminTools/ban");
 const setInfo = require("../controllers/setInfo");
 
 const indexRouter = require("./index");
-const pageRouter = require("./page");
 const loginRouter = require("./login");
 const registerRouter = require("./register");
 const postRouter = require("./post");
@@ -13,10 +12,11 @@ const profileRouter = require("./profile");
 const logoutRouter = require("./logout");
 const tomp3Router = require("./tomp3")
 const utilsRouter = require("./utils.js")
+const boardRouter = require('./board')
 
 //MAIN PAGES
-router.use("/page", pageRouter);
 router.use("/", indexRouter);
+router.use("/boards/", boardRouter);
 router.use("/login", loginRouter);
 router.use("/register", registerRouter);
 router.use("/post", postRouter);
@@ -34,7 +34,7 @@ router.post(
   auth.isAuthenticated,
   setInfo.uploadPfp.single("avatar"),
   (req, res) => {
-    res.redirect("/");
+    res.redirect("back");
   }
 );
 
@@ -43,7 +43,7 @@ router.post(
   auth.isAuthenticated,
   setInfo.updateInfo,
   (req, res) => {
-    res.redirect("/");
+    res.redirect("back");
   }
 );
 

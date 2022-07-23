@@ -79,13 +79,3 @@ settingsButton.addEventListener('click', () => {
 if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
     insulto.style.display = 'block'
 }
-
-showChatButton.addEventListener('click', () => {
-    chatContainer.style.display = 'flex'
-    showChatButton.style.display = 'none'
-})
-
-hideChatButton.addEventListener('click', () => {
-    chatContainer.style.display = 'none'
-    showChatButton.style.display = 'block'
-})

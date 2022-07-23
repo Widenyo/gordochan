@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../public/styles/index.css">
-    <title>gordochan.xyz</title>
-</head>
+    <%- include("components/head", {style: 'board', icon: 'hueylewis', title: 'gordochan.xyz'}); %>
 <body>
-    <a href="../../">Volver</a><br>
+    <%- include("components/volver"); %><br>
     <center><img id="banner" src="../public/banners/<%=banner%>"></center>
     <marquee><img src="../public/siteImages/GORDOCHAN TITLE.gif"></marquee>
 
-    <form action="/post/reply/<%=post.post_id%>" enctype="multipart/form-data" method="POST">
+    <!-- <form action="/post/reply/<%=//post.post_id%>" enctype="multipart/form-data" method="POST">
         <label for="post">responde algo</label><input type="text" name="content" id="text">
         <br>
         <label for="anonimo">Anónimo</label><input type="checkbox" name="anon" id="anontext">
@@ -20,7 +14,7 @@
         <label for="image">Imagen</label><input type="file" name="image" accept="image/png, image/jpeg, image/gif" id="imageInput">
         <br>
         <button type="submit">responder</button>
-    </form>
+    </form> -->
 
 <main>
 

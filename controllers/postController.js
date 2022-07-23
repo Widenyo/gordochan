@@ -61,6 +61,9 @@ exports.createPost = async (req, res, next) => {
 
     let {content, anon, image, reddit} = req.body
     let parentId = req.params.parentId
+    const boardId = req.params.id
+    const boardq = await db.query(`SELECT * FROM board WHERE id = ?`, [boardId])
+    if(!boardq.length) return res.send('no loops')
     if(anon === 'on') anon = 1
     else anon = 0
 
@@ -69,7 +72,7 @@ exports.createPost = async (req, res, next) => {
 
     try{
     const decode = await promisify(jwt.verify)(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET)
-    db.query('INSERT INTO post SET ?', {user_id: decode.id, content:content, anonimo: anon, parent: parentId, phone: reddit === 'true' ? 1 : 0}, (e, r) =>{
+    db.query('INSERT INTO post SET ?', {user_id: decode.id, content:content, anonimo: anon, parent: parentId, phone: reddit === 'true' ? 1 : 0, board: boardId}, (e, r) =>{
         if(e){
             return res.redirect('/')
         }

@@ -1,33 +1,85 @@
-<a id="showChatButton" href="javascript:;"><img src="/public/iconos/msn.png" id="msn"></a>
-<div id="chatContainer">
-    <a href="javascript:;" id="hideChatButton">_</a>
-    <ul id="messages"></ul>
-    <form id="sendMessage">
-        <input id="inputMsg" autocomplete="off" />
-    </form>
+<a id="showChatButton" href="javascript:;"
+  ><img
+    src="/public/iconos/msn.png"
+    id="msn"
+    style="width: 50px; height: 50px; position: fixed; bottom: 0px; right: 0px"
+/></a>
+<div
+  id="chatContainer"
+  style="
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    flex-direction: column;
+    display: none;
+  "
+>
+  <a
+    href="javascript:;"
+    id="hideChatButton"
+    style="
+      align-self: flex-end;
+      margin-right: 20px;
+      color: white;
+      text-decoration: none;
+      font-size: 24px;
+    "
+    >_</a
+  >
+  <ul
+    id="messages"
+    style="
+      color: black;
+      text-decoration: none;
+      list-style: none;
+      overflow-y: auto;
+      overflow-wrap: break-word;
+      padding: 0;
+      width: 300px;
+      height: 450px;
+      background-color: white;
+    "
+  ></ul>
+  <form id="sendMessage" style="width: 100%; display: flex">
+    <input id="inputMsg" autocomplete="off" style="width: 100%" />
+  </form>
 </div>
 
-<script src = "/socket.io/socket.io.js"></script>
-   
+<script src="/socket.io/socket.io.js"></script>
+
 <script>
-   const socket = io();
+  showChatButton.addEventListener("click", () => {
+    chatContainer.style.display = "flex";
+    showChatButton.style.display = "none";
+  });
 
-   const formMsg = document.getElementById('sendMessage');
-   const inputMsg = document.getElementById('inputMsg');
-   const messages = document.getElementById('messages')
+  hideChatButton.addEventListener("click", () => {
+    chatContainer.style.display = "none";
+    showChatButton.style.display = "block";
+  });
 
-   formMsg.addEventListener('submit', function(e) {
+  const socket = io();
+  let bg = true;
+
+  const formMsg = document.getElementById("sendMessage");
+  const inputMsg = document.getElementById("inputMsg");
+  const messages = document.getElementById("messages");
+
+  formMsg.addEventListener("submit", function (e) {
     e.preventDefault();
     if (inputMsg.value) {
-      socket.emit('chat message', inputMsg.value);
-      inputMsg.value = '';
+      socket.emit("chat message", inputMsg.value);
+      inputMsg.value = "";
     }
   });
 
-  socket.on('send-message', (msg) => {
-    const item = document.createElement('li');
+  socket.on("send-message", (msg) => {
+    const item = document.createElement("li");
     item.textContent = msg;
+    item.style.cssText =
+      "font-size: 20px;padding: 0;margin: 0;margin-top: 5px;margin-left: 5px;";
+    if (bg) item.style.cssText += "background-color:gray;";
+    bg = !bg;
     messages.appendChild(item);
-  })
-
+  });
 </script>

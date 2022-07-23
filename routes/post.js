@@ -54,14 +54,14 @@ router.get('/:id', auth.isAuthenticated, async (req, res) => {
     })
 })
 
-router.post('/', auth.isAuthenticated, postController.uploadImg.single('image'), postController.createPost, (req, res) => {
-    res.redirect('/')
+router.post('/board/:id', auth.isAuthenticated, postController.uploadImg.single('image'), postController.createPost, async (req, res) => {
+    res.redirect('back')
 })
 
-router.post('/reply/:parentId', auth.isAuthenticated, postController.uploadImg.single('image'), postController.createPost, (req, res) =>{
-    res.redirect('/post/' +  req.params.parentId)
-})
+// router.post('/:id/reply/:parentId', auth.isAuthenticated, postController.uploadImg.single('image'), postController.createPost, (req, res) =>{
+//     res.redirect('/post/' +  req.params.parentId)
+// })
 
-router.get('/deletepost/:id', auth.isAuthenticated, auth.isAdmin, deletePost)
+// router.get('/deletepost/:id', auth.isAuthenticated, auth.isAdmin, deletePost)
 
 module.exports = router;
