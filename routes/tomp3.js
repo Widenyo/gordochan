@@ -29,8 +29,6 @@ router.get('/download/:id', isAuthenticated, async (req, res) => {
     const {id} = req.params
     const {title} = req.query
 
-    console.log(title)
-
     if(!title) return res.send(title + ' lol') 
 
     const mp3 = title.replace(/[\/\\.":*?<>{}|]/g, '') + '.mp3'
@@ -68,6 +66,51 @@ router.get('/download/:id', isAuthenticated, async (req, res) => {
       res.end();
 
       
+
+})
+
+router.get('/downloadmp4/:id', isAuthenticated, async (req, res) => {
+
+  const {id} = req.params
+  const {title} = req.query
+
+  if(!title) return res.send(title + ' lol') 
+
+  const mp4 = title.replace(/[\/\\.":*?<>{}|]/g, '') + '.mp4'
+
+  
+
+  
+      try{
+      await new Promise((resolve, reject) => { // wait
+          ytdl('http://www.youtube.com/watch?v=' + id)
+          .on('error', e => reject(e))
+          .pipe(fs.createWriteStream(`${__dirname}/../musica/${mp4}`))
+          .on('close', () => {
+            resolve();
+          })
+        })
+      }catch(e){
+        console.log(e)
+        return res.send('ERROR XD')
+      }
+
+    const user = await getThisUserById(req)
+
+    await db.query('INSERT INTO recent_downloads SET ?', {user_id: user.id, anon: false, filename: mp4})
+
+
+    var stat = fs.statSync(`${__dirname}/../musica/${mp4}`);
+    var file = fs.readFileSync(`${__dirname}/../musica/${mp4}`, 'binary');
+    res.setHeader('Content-Length', stat.size);
+    res.setHeader('Content-Type', 'audio/mpeg');
+    !validator(mp4) ?
+    res.setHeader('Content-Disposition', `attachment; filename=${contentDisposition(mp4)}`):
+    res.setHeader('Content-Disposition', `attachment; filename=\"${mp4}\"`);
+    res.write(file, 'binary');
+    res.end();
+
+    
 
 })
 
