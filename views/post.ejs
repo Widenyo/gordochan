@@ -2,18 +2,18 @@
 <html lang="en">
     <%- include("components/head", {style: 'board', icon: 'hueylewis', title: 'gordochan.xyz'}); %>
 <body>
-    <% if(board.id){ %>
+    <% if(board){ %>
         <a href="/boards/<%=board.short%>/">Volver...</a>
+        <center><img id="banner" src="../public/banners/<%=banner%>"><br>
+            <h1>/<%=board.short%>/ - <%=board.name%></h1>
+        </center>
     <%}else{ %>
         <%- include("components/volver"); %>
     <%} %>
     <br>
-    <center><img id="banner" src="../public/banners/<%=banner%>"><br>
-        <h1>/<%=board.short%>/ - <%=board.name%></h1>
-    </center>
     <marquee><img src="../public/siteImages/GORDOCHAN TITLE.gif"></marquee>
 
-    <% if(board.id && post.post_id){ %>
+    <% if(board && post){ %>
     <form action="/post/board/<%=board.id%>/reply/<%=post.post_id%>" enctype="multipart/form-data" method="POST">
         <label for="post">responde algo</label><input type="text" name="content" id="text">
         <br>

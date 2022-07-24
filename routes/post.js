@@ -13,7 +13,7 @@ router.get('/:id', auth.isAuthenticated, async (req, res) => {
     const {id} = req.params
 
     const postq = await db.query('SELECT * FROM post JOIN post_image ON post_id = post.id WHERE post.id = ?' , id)
-    if(!postq.length) return res.render('post', {post: false, banner: getRandomBanner() })
+    if(!postq.length) return res.render('post', {post: false, banner: getRandomBanner(), board: null })
 
     const post = postq[0]
     const board = await getBoard(post.board)

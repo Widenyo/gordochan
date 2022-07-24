@@ -81,14 +81,15 @@ exports.createPost = async (req, res, next) => {
             let postId = r.insertId
 
             if(parentId){
-                db.query('SELECT * from post WHERE id = ?', parentId, (err, res) =>{
-                    if(!res[0].parent){
-                        db.query(`UPDATE post SET top_parent = ? WHERE id = ${postId}`, res[0].id)
-                        db.query('UPDATE post SET bump = 0 WHERE id = ?', res[0].id)
+                db.query('SELECT * from post WHERE id = ?', parentId, (err, r) =>{
+                    if(!r.length) return res.send('no loops')
+                    if(!r[0].parent){
+                        db.query(`UPDATE post SET top_parent = ? WHERE id = ${postId}`, r[0].id)
+                        db.query('UPDATE post SET bump = 0 WHERE id = ?', r[0].id)
                     }
                     else{
-                        db.query(`UPDATE post SET top_parent = ? WHERE id = ${postId}`, res[0].top_parent)
-                        db.query('UPDATE post SET bump = 0 WHERE id = ?', res[0].top_parent)
+                        db.query(`UPDATE post SET top_parent = ? WHERE id = ${postId}`, r[0].top_parent)
+                        db.query('UPDATE post SET bump = 0 WHERE id = ?', r[0].top_parent)
                     }
                 })
             }
