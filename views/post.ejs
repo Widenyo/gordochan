@@ -2,11 +2,19 @@
 <html lang="en">
     <%- include("components/head", {style: 'board', icon: 'hueylewis', title: 'gordochan.xyz'}); %>
 <body>
-    <%- include("components/volver"); %><br>
-    <center><img id="banner" src="../public/banners/<%=banner%>"></center>
+    <% if(board.id){ %>
+        <a href="/boards/<%=board.short%>/">Volver...</a>
+    <%}else{ %>
+        <%- include("components/volver"); %>
+    <%} %>
+    <br>
+    <center><img id="banner" src="../public/banners/<%=banner%>"><br>
+        <h1>/<%=board.short%>/ - <%=board.name%></h1>
+    </center>
     <marquee><img src="../public/siteImages/GORDOCHAN TITLE.gif"></marquee>
 
-    <!-- <form action="/post/reply/<%=//post.post_id%>" enctype="multipart/form-data" method="POST">
+    <% if(board.id && post.post_id){ %>
+    <form action="/post/board/<%=board.id%>/reply/<%=post.post_id%>" enctype="multipart/form-data" method="POST">
         <label for="post">responde algo</label><input type="text" name="content" id="text">
         <br>
         <label for="anonimo">Anónimo</label><input type="checkbox" name="anon" id="anontext">
@@ -14,7 +22,8 @@
         <label for="image">Imagen</label><input type="file" name="image" accept="image/png, image/jpeg, image/gif" id="imageInput">
         <br>
         <button type="submit">responder</button>
-    </form> -->
+    </form>
+    <% } %>
 
 <main>
 
@@ -102,6 +111,7 @@
     <% }else{ %>
         <h1>ESE POST NOE XISTE XD</h1>
    <% } %>
+   <%- include("components/chat.ejs") %>
 </main>
 </body>
 </html>
