@@ -173,3 +173,13 @@ body{
     font-size: 26px;
 }
 
+.descarga{
+    text-decoration: none;
+    color: #AAAAAA;
+    background-color: #0000AA
+}
+
+.descarga:hover{
+    background-color: #B30002;
+    color: #A0A037;
+}

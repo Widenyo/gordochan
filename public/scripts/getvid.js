@@ -14,11 +14,11 @@ buscar.addEventListener('click', async () => {
         <div class="video" id=${i}>
         <h2>${v.title}</h2>
         <h5>${v.channel}</h5>
-        <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank">Youtube</a>
+        <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank">Youtube</a><br>
         Duracion: ${v.length}<br>
         <a id="${i}__click" url="${v.thumbnail}" onclick=sauceNAO(${i}) href="javascript:void(0);"><img src="${v.thumbnail}" class='vidimg'><br></a>
-        <a href='/tomp3/download/${v.id}?title=${v.title.replace(/[\/\\.":*?<>{}|#]/g, '')}'>Descargar MP3</a><br>
-        <a href='/tomp3/downloadmp4/${v.id}?title=${v.title.replace(/[\/\\.":*?<>{}|#]/g, '')}'>Descargar MP4</a>
+        <a class="descarga" target="_blank" href='/tomp3/download/${v.id}?title=${v.title.replace(/[\/\\.":*?<>{}|#]/g, '')}'>Descargar MP3</a><br>
+        <a class="descarga" target="_blank" href='/tomp3/downloadmp4/${v.id}?title=${v.title.replace(/[\/\\.":*?<>{}|#]/g, '')}'>  Descargar MP4</a>
         <div id="${i}__saucenao"></div>
         <br>
         </div>
